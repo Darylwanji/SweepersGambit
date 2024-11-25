@@ -1,0 +1,78 @@
+/* General Styling */
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+  }
+  
+  h1 {
+    margin: 20px 0;
+    color: #333;
+  }
+  
+  /* Menu Styling */
+  #menu {
+    margin: 10px auto;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    align-items: center;
+  }
+  
+  #menu select, #menu button {
+    padding: 5px 10px;
+    font-size: 16px;
+  }
+  
+  #restart-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  #restart-button:hover {
+    background-color: #45a049;
+  }
+  
+  /* Game Board Styling */
+  #game-board {
+    display: grid;
+    justify-content: center;
+    margin: 20px auto;
+    gap: 2px;
+  }
+  
+  .cell {
+    width: 40px;
+    height: 40px;
+    background-color: #d4d4d4;
+    border: 1px solid #aaa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .cell.revealed {
+    background-color: #f4f4f9;
+    cursor: default;
+  }
+  
+  .cell.mine {
+    color: red;
+  }
+  
+  /* Message Styling */
+  #message {
+    margin-top: 10px;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  

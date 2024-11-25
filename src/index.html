@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sweeper's Gambit</title>
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+  <h1>Sweeper's Gambit</h1>
+  
+  <div id="menu">
+    <label for="difficulty">Difficulty:</label>
+    <select id="difficulty">
+      <option value="easy">Easy</option>
+      <option value="medium" selected>Medium</option>
+      <option value="hard">Hard</option>
+    </select>
+    <button id="restart-button">Restart</button>
+  </div>
+  
+  <div id="game-container">
+    <div id="game-board"></div>
+  </div>
+  
+  <div id="message"></div>
+  <script src="scripts/game/core/script.js"></script>
+</body>
+</html>
