@@ -1,3 +1,137 @@
+// Sound System
+const SOUNDS = {
+    background: new Audio('../src/assets/audio/CheckmateDreams.mp3'),
+    click: new Audio('sounds/click.mp3'),
+    flag: new Audio('sounds/flag.mp3'),
+    gameOver: new Audio('sounds/game-over.mp3'),
+    win: new Audio('sounds/win.mp3')
+};
+
+// Sound settings
+let isMusicPlaying = false;
+let isSoundEnabled = true;
+
+// Initialize sound system
+function initSoundSystem() {
+    // Set up background music
+    SOUNDS.background.loop = true;
+    SOUNDS.background.volume = 0.2; // 20% volume for background music
+
+    SOUNDS.background.addEventListener('ended', () => {
+        if (isMusicPlaying) {
+            SOUNDS.background.currentTime = 0; // Reset to beginning
+            SOUNDS.background.play()
+                .catch(error => console.error('Error restarting music:', error));
+        }
+    });
+    
+    // Set up sound effects volume
+    SOUNDS.click.volume = 0.3;
+    SOUNDS.flag.volume = 0.3;
+    SOUNDS.gameOver.volume = 0.3;
+    SOUNDS.win.volume = 0.3;
+
+    // Load saved preferences
+    const savedMusicState = localStorage.getItem('music-enabled') === 'false';
+    const savedSoundState = localStorage.getItem('sound-enabled') !== 'false'; // Default to true
+    
+    isSoundEnabled = savedSoundState;
+    isMusicPlaying = savedMusicState; // Set initial music state
+    updateSoundButton();
+    
+    // Initialize music button event listener
+    const musicButton = document.getElementById('music-toggle');
+    if (musicButton) {
+        musicButton.addEventListener('click', toggleBackgroundMusic);
+        updateMusicButton();
+    }
+
+    // Initialize sound button event listener
+    const soundButton = document.getElementById('sound-toggle');
+    if (soundButton) {
+        soundButton.addEventListener('click', toggleSoundEffects);
+        updateSoundButton();
+    }
+
+    // Start playing music immediately
+    playBackgroundMusic();
+}
+// Play sound effect if enabled
+function playSound(soundName) {
+    if (isSoundEnabled && SOUNDS[soundName]) {
+        // Create a new audio instance for overlapping sounds
+        if (soundName !== 'background') {
+            const sound = SOUNDS[soundName].cloneNode();
+            sound.play().catch(error => console.error('Error playing sound:', error));
+        }
+    }
+}
+
+// Background music controls
+function playBackgroundMusic() {
+    // Reset the audio to the beginning
+    SOUNDS.background.currentTime = 0;
+    
+    // Play the audio with error handling
+    const playPromise = SOUNDS.background.play();
+    
+    if (playPromise !== undefined) {
+        playPromise
+            .then(() => {
+                isMusicPlaying = true;
+                updateMusicButton();
+                console.log('Music started successfully');
+            })
+            .catch(error => {
+                console.error('Error playing music:', error);
+                // Try playing after user interaction
+                document.addEventListener('click', function initAudio() {
+                    playBackgroundMusic();
+                    document.removeEventListener('click', initAudio);
+                }, { once: true });
+            });
+    }
+}
+
+function toggleBackgroundMusic() {
+    console.log('Toggle music called. Current state:', isMusicPlaying);
+    
+    if (isMusicPlaying) {
+        SOUNDS.background.pause();
+        SOUNDS.background.currentTime = 0;
+        isMusicPlaying = false;
+    } else {
+        playBackgroundMusic();
+    }
+    
+    localStorage.setItem('music-enabled', isMusicPlaying);
+    updateMusicButton();
+    console.log('New music state:', isMusicPlaying);
+}
+
+function toggleSoundEffects() {
+    isSoundEnabled = !isSoundEnabled;
+    localStorage.setItem('sound-enabled', isSoundEnabled);
+    updateSoundButton();
+}
+
+// Update UI buttons
+function updateMusicButton() {
+    const musicButton = document.getElementById('music-toggle');
+    if (musicButton) {
+        musicButton.textContent = isMusicPlaying ? '🎵 Music On' : '🎵 Music Off';
+        musicButton.classList.toggle('active', isMusicPlaying);
+    }
+}
+
+function updateSoundButton() {
+    const soundButton = document.getElementById('sound-toggle');
+    if (soundButton) {
+        soundButton.textContent = isSoundEnabled ? '🔊 Sound On' : '🔈 Sound Off';
+        soundButton.classList.toggle('active', isSoundEnabled);
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize theme handler
     initThemeHandler();
@@ -6,9 +140,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const isGamePage = window.location.pathname.includes('game.html');
     
     if (isGamePage) {
+        // Initialize sound system first
+        initSoundSystem();
+    
         // Game page initialization
         initGame();
         document.getElementById('restart-button').addEventListener('click', initGame);
+        // Add sound control listeners
+
+         // Add a one-time click listener to start audio (browser policy)
+         document.addEventListener('click', function initAudio() {
+            if (!isMusicPlaying) {
+                playBackgroundMusic();
+            }
+            document.removeEventListener('click', initAudio);
+        }, { once: true });
+        document.getElementById('music-toggle')?.addEventListener('click', toggleBackgroundMusic);
+        document.getElementById('sound-toggle')?.addEventListener('click', toggleSoundEffects);
+                
+        updateMusicButton();
+        updateSoundButton();
     } else {
         // Menu page initialization
         const mainMenu = document.getElementById('main-menu');
@@ -174,6 +325,7 @@ function revealCell(row, col) {
     if (cell.isMine) {
         cell.element.textContent = '💣';
         cell.element.classList.add('mine');
+        playSound('gameOver');
         endGame(false);
     } else {
         if (cell.surroundingMines > 0) {
@@ -202,6 +354,7 @@ function flagCell(row, col) {
 
     cell.flagged = !cell.flagged;
     cell.element.textContent = cell.flagged ? '🚩' : '';
+    playSound('flag')
 }
 
 // Check win condition
@@ -227,6 +380,10 @@ function endGame(won) {
     message.textContent = won ? 'Congratulations! You won!' : 'Game Over!';
     message.style.color = won ? 'green' : 'red';
 
+    if (won) {
+        playSound('win');
+    }
+
     // Reveal all mines
     for (let i = 0; i < rows; i++) {
         for (let j = 0; j < cols; j++) {
@@ -241,3 +398,24 @@ function endGame(won) {
         }
     }
 }
+// Add visibility change handler to manage music when tab is hidden/visible
+document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+        if (isMusicPlaying) {
+            SOUNDS.background.pause();
+        }
+    } else {
+        if (isMusicPlaying) {
+            SOUNDS.background.play()
+                .catch(error => console.error('Error resuming music:', error));
+        }
+    }
+});
+
+// Handle page unload
+window.addEventListener('beforeunload', () => {
+    if (isMusicPlaying) {
+        SOUNDS.background.pause();
+        SOUNDS.background.currentTime = 0;
+    }
+});

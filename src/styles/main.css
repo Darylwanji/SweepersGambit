@@ -174,3 +174,25 @@ h1 {
     font-weight: bold;
     color: #333;
 }
+/* Sound control buttons */
+#music-toggle,
+#sound-toggle {
+    padding: 5px 10px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+#music-toggle:hover,
+#sound-toggle:hover {
+    background-color: #e0e0e0;
+}
+
+#music-toggle.active,
+#sound-toggle.active {
+    background-color: #4CAF50;
+    color: white;
+}
