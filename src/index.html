@@ -9,21 +9,50 @@
 <body>
   <h1>Sweeper's Gambit</h1>
   
-  <div id="menu">
-    <label for="difficulty">Difficulty:</label>
-    <select id="difficulty">
-      <option value="easy">Easy</option>
-      <option value="medium" selected>Medium</option>
-      <option value="hard">Hard</option>
-    </select>
-    <button id="restart-button">Restart</button>
+  <!-- Main Menu -->
+  <div id="main-menu" class="menu-screen">
+    <div class="menu-options">
+      <button onclick="window.location.href='game.html'" class="menu-button">Play</button>
+      <button id="controls-button" class="menu-button">Controls</button>
+      <button id="quit-button" class="menu-button">Quit</button>
+    </div>
+    <div id="theme-selector">
+      <label for="theme">Theme:</label>
+      <select id="theme">
+        <option value="classic">Classic Green</option>
+        <option value="blue">Ocean Blue</option>
+        <option value="purple">Royal Purple</option>
+        <option value="wood">Wooden</option>
+      </select>
+    </div>
   </div>
-  
-  <div id="game-container">
-    <div id="game-board"></div>
+
+  <!-- Game Screen -->
+  <div id="game-screen" class="hidden">
+    <div id="menu">
+      <label for="difficulty">Difficulty:</label>
+      <select id="difficulty">
+        <option value="easy">Easy</option>
+        <option value="medium" selected>Medium</option>
+        <option value="hard">Hard</option>
+      </select>
+      <button id="restart-button">Restart</button>
+    </div>
+    <div id="game-container">
+      <div id="game-board"></div>
+    </div>
+    <div id="message"></div>
+    <button id="back-to-menu">Back to Menu</button>
   </div>
-  
-  <div id="message"></div>
+
+  <!-- Controls Screen -->
+  <div id="controls-screen" class="hidden">
+    <h2>Controls</h2>
+    <p>Left Click: Reveal Cell</p>
+    <p>Right Click: Flag Cell</p>
+    <button id="back-to-menu">Back to Menu</button>
+  </div>
+
   <script src="scripts/game/core/script.js"></script>
 </body>
 </html>
