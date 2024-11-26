@@ -1,3 +1,7 @@
+let startTime;
+let timerInterval;
+let currentTime;
+
 // Sound System
 const SOUNDS = {
     background: new Audio('../src/assets/audio/CheckmateDreams.mp3'),
@@ -219,6 +223,13 @@ function initGame() {
     const gameBoard = document.getElementById('game-board');
     const message = document.getElementById('message');
     const difficultySelect = document.getElementById('difficulty');
+    updateLeaderboard();
+
+    // Reset timer
+    if (timerInterval) {
+        stopTimer();
+    }
+    document.getElementById('timer').textContent = 'Time: 00:00';
 
     updateDifficulty();
     gameBoard.style.gridTemplateColumns = `repeat(${cols}, 60px)`;
@@ -257,6 +268,9 @@ function initGame() {
 
     placeMines();
     calculateSurroundingMines();
+
+    // Start the timer
+    startTimer();
 }
 
 // Update difficulty
@@ -373,12 +387,37 @@ function checkWin() {
     }
 }
 
-// End game
 function endGame(won) {
     gameOver = true;
+    const finalTime = stopTimer();
+    const difficulty = document.getElementById('difficulty').value;
     const message = document.getElementById('message');
-    message.textContent = won ? 'Congratulations! You won!' : 'Game Over!';
+    
+    if (won) {
+        const isNewBest = saveBestTime(difficulty, finalTime);
+        updateLeaderboard();
+        messageText = `Congratulations! You won in ${formatTime(finalTime)}${isNewBest ? ' - New Best Time!' : ''}`;
+        message.style.color = '#00ff00';
+    } else {
+        messageText = 'Game Over!';
+        message.style.color = '#ff0000';
+    }
+    messageText += `Time: ${formatTime(finalTime)}`;
+    
+    // Check for best time if won
+    if (won) {
+        const isNewBest = saveBestTime(difficulty, finalTime);
+        const bestTime = getBestTime(difficulty);
+        
+        if (isNewBest) {
+            messageText += '\nNEW BEST TIME! 🏆';
+        }
+        messageText += `\nBest Time: ${formatTime(bestTime)}`;
+    }
+    
+    message.textContent = messageText;
     message.style.color = won ? 'green' : 'red';
+    message.style.whiteSpace = 'pre-line'; // Preserve line breaks
 
     if (won) {
         playSound('win');
@@ -398,6 +437,7 @@ function endGame(won) {
         }
     }
 }
+
 // Add visibility change handler to manage music when tab is hidden/visible
 document.addEventListener('visibilitychange', () => {
     if (document.hidden) {
@@ -419,3 +459,91 @@ window.addEventListener('beforeunload', () => {
         SOUNDS.background.currentTime = 0;
     }
 });
+
+// Timer functions
+function startTimer() {
+    startTime = Date.now();
+    updateTimer();
+    // Update timer every second
+    timerInterval = setInterval(updateTimer, 1000);
+}
+
+function stopTimer() {
+    clearInterval(timerInterval);
+    return currentTime;
+}
+
+function updateTimer() {
+    const elapsedTime = Math.floor((Date.now() - startTime) / 1000); // Convert to seconds
+    currentTime = elapsedTime;
+    
+    const minutes = Math.floor(elapsedTime / 60);
+    const seconds = elapsedTime % 60;
+    
+    // Format time as MM:SS
+    const formattedTime = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    document.getElementById('timer').textContent = `Time: ${formattedTime}`;
+}
+
+function formatTime(timeInSeconds) {
+    const minutes = Math.floor(timeInSeconds / 60);
+    const seconds = timeInSeconds % 60;
+    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+}
+
+// Function to save best time
+function saveBestTime(difficulty, timeInSeconds) {
+    // Reset all leaderboards if this is the first time using the new format
+    if (!localStorage.getItem('leaderboardWithNames')) {
+        localStorage.removeItem('leaderboard');
+        localStorage.setItem('leaderboardWithNames', 'true');
+    }
+
+    const leaderboard = JSON.parse(localStorage.getItem('leaderboard')) || {};
+    if (!leaderboard[difficulty]) {
+        leaderboard[difficulty] = [];
+    }
+    
+    const playerName = prompt("Congratulations! Enter your name for the leaderboard:", "Player");
+    const entry = {
+        name: playerName || "Anonymous",
+        time: timeInSeconds
+    };
+    
+    // Add new entry and sort
+    leaderboard[difficulty].push(entry);
+    leaderboard[difficulty].sort((a, b) => a.time - b.time);
+    
+    // Keep only top 5 times
+    leaderboard[difficulty] = leaderboard[difficulty].slice(0, 5);
+    
+    localStorage.setItem('leaderboard', JSON.stringify(leaderboard));
+    return leaderboard[difficulty][0].time === timeInSeconds; // Return true if it's a new best time
+}
+
+function updateLeaderboard() {
+    const leaderboardDiv = document.getElementById('leaderboard-entries');
+    const difficulty = document.getElementById('difficulty').value;
+    const leaderboard = JSON.parse(localStorage.getItem('leaderboard')) || {};
+    const entries = leaderboard[difficulty] || [];
+    
+    let html = `<h3>${difficulty.charAt(0).toUpperCase() + difficulty.slice(1)} Mode</h3>`;
+    if (entries.length === 0) {
+        html += '<p>No times recorded yet</p>';
+    } else {
+        html += '<ol>';
+        entries.forEach(entry => {
+            html += `<li>${entry.name} - ${formatTime(entry.time)}</li>`;
+        });
+        html += '</ol>';
+    }
+    
+    leaderboardDiv.innerHTML = html;
+}
+
+// Function to get best time
+function getBestTime(difficulty) {
+    const leaderboard = JSON.parse(localStorage.getItem('leaderboard')) || {};
+    const times = leaderboard[difficulty] || [];
+    return times.length > 0 ? times[0] : null;
+}

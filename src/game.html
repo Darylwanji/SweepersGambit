@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sweeper's Gambit - Game</title>
     <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/leaderboard.css">
+    <link rel="stylesheet" href="styles/game-layout.css">
 </head>
 <body>
     <h1>Sweeper's Gambit</h1>
@@ -31,11 +33,18 @@
             <button id="sound-toggle" class="menu-button">🔊 Sound On</button>
             <button onclick="window.location.href='index.html'" class="menu-button">Back to Menu</button>
         </div>
-        
-        <div id="game-container">
-            <div id="game-board"></div>
+
+        <div id="game-content">
+            <div id="timer" class="timer">Time: 00:00</div>
+            <div id="game-container">
+                <div id="game-board"></div>
+                <div id="message"></div>
+            </div>
+            <div id="leaderboard" class="leaderboard">
+                <h2>Leaderboard</h2>
+                <div id="leaderboard-entries"></div>
+            </div>
         </div>
-        <div id="message"></div>
     </div>
 
     <script src="scripts/game/core/script.js"></script>

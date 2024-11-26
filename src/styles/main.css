@@ -63,6 +63,13 @@ h1 {
     color: #333;
 }
 
+h2 {
+    background-color: var(--light-square);
+}
+.leaderboard-entries {
+    background-color: var(--light-square);
+}
+
 .hidden {
     display: none;
 }
@@ -195,4 +202,21 @@ h1 {
 #sound-toggle.active {
     background-color: #4CAF50;
     color: white;
+}
+.timer {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin: 10px 0;
+    padding: 10px;
+    background-color: var(--dark-square);
+    border-radius: 5px;
+    display: inline-block;
+}
+
+#message {
+    font-size: 1.2em;
+    margin: 15px 0;
+    padding: 10px;
+    border-radius: 5px;
+    white-space: pre-line;
 }
