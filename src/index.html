@@ -9,23 +9,26 @@
 <body>
   <h1>Sweeper's Gambit</h1>
   
-  <!-- Main Menu -->
-  <div id="main-menu" class="menu-screen">
-    <div class="menu-options">
-      <button onclick="window.location.href='game.html'" class="menu-button">Play</button>
-      <button onclick="window.location.href='controls.html'" class="menu-button">Controls</button>
-      <button id="quit-button" class="menu-button">Quit</button>
+<!-- Main Menu -->
+<div id="main-menu" class="menu-screen">
+  <div class="menu-options">
+    <div class="game-selection">
+      <button onclick="window.location.href='game.html'" class="menu-button">Minesweeper</button>
+      <button onclick="window.location.href='chess.html'" class="menu-button">Chess vs AI</button>
     </div>
-    <div id="theme-selector">
-      <label for="theme">Theme:</label>
-      <select id="theme">
-        <option value="classic">Classic Green</option>
-        <option value="blue">Ocean Blue</option>
-        <option value="purple">Royal Purple</option>
-        <option value="wood">Wooden</option>
-      </select>
-    </div>
+    <button onclick="window.location.href='controls.html'" class="menu-button">Controls</button>
+    <button id="quit-button" class="menu-button">Quit</button>
   </div>
+  <div id="theme-selector">
+    <label for="theme">Theme:</label>
+    <select id="theme">
+      <option value="classic">Classic Green</option>
+      <option value="blue">Ocean Blue</option>
+      <option value="purple">Royal Purple</option>
+      <option value="wood">Wooden</option>
+    </select>
+  </div>
+</div>
 
   <!-- Game Screen -->
   <div id="game-screen" class="hidden">

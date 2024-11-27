@@ -142,14 +142,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Check which page we're on
     const isGamePage = window.location.pathname.includes('game.html');
+    const isChessPage = window.location.pathname.includes('chess.html');
     
-    if (isGamePage) {
+    if (isGamePage || isChessPage) {
         // Initialize sound system first
         initSoundSystem();
     
         // Game page initialization
-        initGame();
-        document.getElementById('restart-button').addEventListener('click', initGame);
+        // Game page initialization
+        if (isGamePage) {
+            initGame();
+            document.getElementById('restart-button').addEventListener('click', initGame);
+        }
         // Add sound control listeners
 
          // Add a one-time click listener to start audio (browser policy)
