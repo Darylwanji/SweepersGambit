@@ -327,6 +327,72 @@ function calculateSurroundingMines() {
         }
     }
 }
+// Calculate surrounding mines for bishop's movement
+function calculateSurroundingMinesBishop() {
+    for (let i = 0; i < rows; i++) {
+        for (let j = 0; j < cols; j++) {
+            if (cells[i][j].isMine) continue;
+
+            let count = 0;
+            // Check all diagonal directions (Bishop's movement)
+            const directions = [
+                [-1, -1], // top-left
+                [-1, 1],  // top-right
+                [1, -1],  // bottom-left
+                [1, 1]    // bottom-right
+            ];
+
+            // For each diagonal direction
+            for (const [di, dj] of directions) {
+                // Continue along the diagonal until edge or mine
+                let ni = i + di;
+                let nj = j + dj;
+                while (ni >= 0 && ni < rows && nj >= 0 && nj < cols) {
+                    if (cells[ni][nj].isMine) {
+                        count++;
+                        break; // Only count the first mine in each direction
+                    }
+                    ni += di;
+                    nj += dj;
+                }
+            }
+            cells[i][j].surroundingMines = count;
+        }
+    }
+}
+// Calculate surrounding mines for rook's movement
+function calculateSurroundingMinesRook() {
+    for (let i = 0; i < rows; i++) {
+        for (let j = 0; j < cols; j++) {
+            if (cells[i][j].isMine) continue;
+
+            let count = 0;
+            // Check horizontal and vertical directions (Rook's movement)
+            const directions = [
+                [-1, 0],  // up
+                [1, 0],   // down
+                [0, -1],  // left
+                [0, 1]    // right
+            ];
+
+            // For each direction
+            for (const [di, dj] of directions) {
+                // Continue along the line until edge or mine
+                let ni = i + di;
+                let nj = j + dj;
+                while (ni >= 0 && ni < rows && nj >= 0 && nj < cols) {
+                    if (cells[ni][nj].isMine) {
+                        count++;
+                        break; // Only count the first mine in each direction
+                    }
+                    ni += di;
+                    nj += dj;
+                }
+            }
+            cells[i][j].surroundingMines = count;
+        }
+    }
+}
 
 // Reveal cell
 function revealCell(row, col) {
