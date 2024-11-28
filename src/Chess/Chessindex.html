@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chess Game</title>
+    <link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css">
+    <link rel="stylesheet" href="Chessstyles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="game-container">
+            <div class="board-container">
+                <div id="board"></div>
+                <div class="controls">
+                    <button id="restart">New Game</button>
+                    <select id="difficulty">
+                        <option value="1">Easy</option>
+                        <option value="2">Medium</option>
+                        <option value="3" selected>Hard</option>
+                        <option value="4">Expert</option>
+                    </select>
+                </div>
+                <div id="status"></div>
+                <div class="captured-pieces">
+                    <div id="captured-white" class="captured"></div>
+                    <div id="captured-black" class="captured"></div>
+                </div>
+            </div>
+            <div class="move-history">
+                <h3>Move History</h3>
+                <div id="pgn"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio elements -->
+    <audio id="moveSound" src="https://github.com/lichess-org/lila/raw/master/public/sound/standard/Move.mp3" preload="auto"></audio>
+    <audio id="captureSound" src="https://github.com/lichess-org/lila/raw/master/public/sound/standard/Capture.mp3" preload="auto"></audio>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+    <script src="Chessscript.js"></script>
+</body>
+</html>
