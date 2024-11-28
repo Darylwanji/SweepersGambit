@@ -220,3 +220,17 @@ h2 {
     border-radius: 5px;
     white-space: pre-line;
 }
+
+button, select {
+    border-radius: 20px;
+    padding: 8px 16px;
+    margin: 0 5px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}

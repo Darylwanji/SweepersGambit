@@ -7,6 +7,114 @@ const pgnElement = document.getElementById("pgn");
 const moveSound = document.getElementById("moveSound");
 const captureSound = document.getElementById("captureSound");
 
+
+// Music and sound state
+let isMusicPlaying = false;
+let isSoundEnabled = true;
+
+// Background music
+const backgroundMusic = new Audio('../assets/audio/CheckmateDreams.mp3');
+backgroundMusic.loop = true;
+backgroundMusic.volume = 0.2;
+
+// Sound controls
+function initSoundControls() {
+    // Load saved preferences
+    const savedMusicState = localStorage.getItem('chess-music-enabled') === 'true';
+    const savedSoundState = localStorage.getItem('chess-sound-enabled') !== 'false'; // Default to true
+    
+    isSoundEnabled = savedSoundState;
+    isMusicPlaying = savedMusicState;
+    
+    // Initialize buttons
+    const musicButton = document.getElementById('music-toggle');
+    const soundButton = document.getElementById('sound-toggle');
+    
+    musicButton.addEventListener('click', toggleBackgroundMusic);
+    soundButton.addEventListener('click', toggleSoundEffects);
+    
+    updateMusicButton();
+    updateSoundButton();
+    
+    // Start music if it was enabled
+    if (isMusicPlaying) {
+        playBackgroundMusic();
+    }
+}
+
+function playBackgroundMusic() {
+    backgroundMusic.currentTime = 0;
+    const playPromise = backgroundMusic.play();
+    
+    if (playPromise !== undefined) {
+        playPromise
+            .then(() => {
+                isMusicPlaying = true;
+                updateMusicButton();
+            })
+            .catch(error => {
+                console.error('Error playing music:', error);
+            });
+    }
+}
+// Toggle background music
+function toggleBackgroundMusic() {
+    if (isMusicPlaying) {
+        backgroundMusic.pause();
+        backgroundMusic.currentTime = 0;
+        isMusicPlaying = false;
+    } else {
+        playBackgroundMusic();
+    }
+    // Save the new state
+    localStorage.setItem('chess-music-enabled', isMusicPlaying);
+    updateMusicButton();
+}
+
+function toggleSoundEffects() {
+    isSoundEnabled = !isSoundEnabled;
+    localStorage.setItem('chess-sound-enabled', isSoundEnabled);
+    updateSoundButton();
+}
+// Update music button
+function updateMusicButton() {
+    const musicButton = document.getElementById('music-toggle');
+    musicButton.textContent = isMusicPlaying ? '🎵 Music On' : '🎵 Music Off';
+    musicButton.classList.toggle('active', isMusicPlaying);
+}
+// Update sound button
+function updateSoundButton() {
+    const soundButton = document.getElementById('sound-toggle');
+    soundButton.textContent = isSoundEnabled ? '🔊 Sound On' : '🔊 Sound Off';
+    soundButton.classList.toggle('active', isSoundEnabled);
+}
+
+// Modify the existing playSound function
+function playSound(sound) {
+    if (isSoundEnabled) {
+        try {
+            sound.currentTime = 0;
+            sound.play().catch(error => console.log('Sound play failed:', error));
+        } catch (error) {
+            console.log('Sound play error:', error);
+        }
+    }
+}
+// Add visibility change handler
+document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+        if (isMusicPlaying) {
+            backgroundMusic.pause();
+        }
+    } else {
+        if (isMusicPlaying) {
+            backgroundMusic.play()
+                .catch(error => console.error('Error resuming music:', error));
+        }
+    }
+});
+
+
 // Game state
 let board = null;
 let game = new Chess();
@@ -304,9 +412,14 @@ difficultySelect.addEventListener('change', function() {
 $(document).ready(() => {
     initializeBoard();
     initializeStockfish();
+    initSoundControls();  
     
-    // Add debug logging for moves
-    game.on('move', function() {
-        console.log('Move made, FEN:', game.fen());
-    });
+    // Start audio on first click (browser policy)
+    document.addEventListener('click', function initAudio() {
+        if (isMusicPlaying) {
+            playBackgroundMusic();
+        }
+        // Remove the click listener after it has run once
+        document.removeEventListener('click', initAudio);
+    }, { once: true });
 });
