@@ -2,10 +2,20 @@
 <html>
 <head>
     <title>Chess Game</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css">
+    <link rel="stylesheet" href="../styles/shared-futuristic.css">
+    <link rel="stylesheet" href="chess-theme.css">
     <link rel="stylesheet" href="Chessstyles.css">
+<script src="../scripts/theme-switcher.js"></script>
 </head>
-<body>
+<body data-theme="dark">
+    <header class="futuristic-header">
+        <h1>Chess vs AI</h1>
+        <button id="theme-toggle" class="futuristic-button">
+            <i class="fas fa-moon"></i>
+        </button>
+    </header>
     <div class="container">
         <div class="game-container">
             <div class="board-container">

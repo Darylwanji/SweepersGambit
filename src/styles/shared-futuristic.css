@@ -2,17 +2,33 @@
 
 /* Base theme variables */
 :root {
-    --primary-gradient: linear-gradient(135deg, #1a1f35 0%, #2a3657 100%);
-    --primary-glow: 0 0 10px rgba(66, 220, 255, 0.5);
-    --text-glow: 0 0 8px rgba(66, 220, 255, 0.3);
-    --border-glow: 0 0 15px rgba(66, 220, 255, 0.4);
-    --primary-color: #42dcff;
-    --secondary-color: #2196f3;
-    --background-dark: #1a1f35;
-    --background-light: #f0f4ff;
-    --text-color: #ffffff;
+    /* Dark Mode Colors and Effects */
+    --primary-gradient: linear-gradient(135deg, #0a192f 0%, #172a45 100%);
+    --primary-glow: 0 0 15px rgba(100, 255, 218, 0.6);
+    --text-glow: 0 0 12px rgba(100, 255, 218, 0.4);
+    --border-glow: 0 0 20px rgba(100, 255, 218, 0.5);
+    --primary-color: #64ffda;
+    --secondary-color: #0a192f;
+    --accent-color: #64ffda;
+    --background-dark: #0a192f;
+    --text-color-dark: #e6f1ff;
+    --text-secondary-dark: #8892b0;
+    
+    /* Light Mode Colors and Effects */
+    --background-light: #f5f8ff;
+    --primary-gradient-light: linear-gradient(135deg, #f5f8ff 0%, #e6eeff 100%);
+    --primary-glow-light: 0 0 15px rgba(0, 102, 204, 0.6);
+    --text-glow-light: 0 0 12px rgba(0, 102, 204, 0.4);
+    --border-glow-light: 0 0 20px rgba(0, 102, 204, 0.5);
+    --primary-color-light: #0066cc;
+    --text-color-light: #1a1a1a;
+    --text-secondary-light: #4a4a4a;
+    
+    /* Common Variables */
     --font-primary: 'Rajdhani', sans-serif;
     --transition-speed: 0.3s;
+    --border-radius: 8px;
+    --spacing-unit: 1rem;
 }
 
 /* Dark mode variables */
@@ -32,26 +48,54 @@
 /* Base styles */
 body {
     background: var(--primary-gradient);
-    color: var(--text-color);
+    color: var(--text-color-dark);
     font-family: var(--font-primary);
     margin: 0;
-    padding: 80px 0 60px;  /* Space for fixed nav and footer */
-    transition: background-color var(--transition-speed);
+    padding: 80px 0 60px;
+    transition: all var(--transition-speed);
     min-height: 100vh;
+    letter-spacing: 0.5px;
+}
+
+body.light-mode {
+    background: var(--primary-gradient-light);
+    color: var(--text-color-light);
 }
 
 /* Typography */
-h1, h2, h3 {
+h1 {
+    font-size: 3rem;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    text-shadow: var(--text-glow);
+    margin-bottom: 1.5rem;
+    text-align: center;
+    font-weight: 600;
+    position: relative;
+    animation: titleGlow 2s infinite alternate;
+}
+
+h2, h3 {
     text-shadow: var(--text-glow);
     margin-bottom: 1rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.subtitle {
+    color: var(--text-secondary-dark);
+    font-size: 1.2rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    animation: subtitleFade 1s ease-in;
 }
 
 /* Buttons */
 .futuristic-button {
-    background: rgba(33, 150, 243, 0.1);
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    color: var(--text-color);
+    background: rgba(100, 255, 218, 0.1);
+    border: 2px solid var(--accent-color);
+    border-radius: var(--border-radius);
+    color: var(--text-color-dark);
     cursor: pointer;
     font-family: var(--font-primary);
     font-size: 1rem;
@@ -59,44 +103,201 @@ h1, h2, h3 {
     padding: 0.75rem 1.5rem;
     transition: all var(--transition-speed);
     box-shadow: var(--primary-glow);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    overflow: hidden;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 150px;
+}
+
+.futuristic-button:before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(100, 255, 218, 0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s ease-out, height 0.6s ease-out;
 }
 
 .futuristic-button:hover {
-    background: rgba(66, 220, 255, 0.2);
-    box-shadow: var(--border-glow);
-    transform: scale(1.05);
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px var(--accent-color);
 }
 
-/* Dropdowns */
+.futuristic-button:hover:before {
+    width: 300px;
+    height: 300px;
+    opacity: 0;
+}
+
+.futuristic-button:active {
+    transform: translateY(1px);
+}
+
+/* Light mode button overrides */
+body.light-mode .futuristic-button {
+    background: rgba(0, 102, 204, 0.1);
+    border-color: var(--primary-color-light);
+    color: var(--text-color-light);
+    box-shadow: var(--primary-glow-light);
+}
+
+body.light-mode .futuristic-button:hover {
+    box-shadow: 0 0 20px var(--primary-color-light);
+}
+
+/* Button icon spacing */
+.futuristic-button i {
+    margin-right: 8px;
+}
+
+/* Keyframe Animations */
+@keyframes titleGlow {
+    from {
+        text-shadow: 0 0 20px var(--accent-color);
+    }
+    to {
+        text-shadow: 0 0 30px var(--accent-color), 0 0 40px var(--accent-color);
+    }
+}
+
+@keyframes subtitleFade {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Form Elements */
 .futuristic-select {
-    background: rgba(33, 150, 243, 0.1);
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    color: var(--text-color);
+    background: rgba(100, 255, 218, 0.05);
+    border: 2px solid var(--accent-color);
+    border-radius: var(--border-radius);
+    color: var(--text-color-dark);
     font-family: var(--font-primary);
-    padding: 0.5rem;
+    padding: 0.75rem 1rem;
     width: 200px;
     transition: all var(--transition-speed);
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg width='14' height='8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l6 6 6-6' stroke='%2364ffda' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    padding-right: 2.5rem;
 }
 
-.futuristic-select:hover {
-    border-color: var(--primary-color);
-    box-shadow: var(--primary-glow);
+.futuristic-select:hover,
+.futuristic-select:focus {
+    background-color: rgba(100, 255, 218, 0.1);
+    box-shadow: 0 0 15px var(--accent-color);
+    outline: none;
 }
 
-/* Modal windows */
+/* Light mode select overrides */
+body.light-mode .futuristic-select {
+    background-color: rgba(0, 102, 204, 0.05);
+    border-color: var(--primary-color-light);
+    color: var(--text-color-light);
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg width='14' height='8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l6 6 6-6' stroke='%230066cc' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+}
+
+body.light-mode .futuristic-select:hover,
+body.light-mode .futuristic-select:focus {
+    background-color: rgba(0, 102, 204, 0.1);
+    box-shadow: 0 0 15px var(--primary-color-light);
+}
+
+/* Modal Component */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(10, 25, 47, 0.85);
+    backdrop-filter: blur(8px);
+    z-index: 999;
+    opacity: 0;
+    animation: overlayFadeIn 0.3s ease-out forwards;
+}
+
 .futuristic-modal {
-    background: rgba(26, 31, 53, 0.95);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    box-shadow: var(--border-glow);
+    background: rgba(10, 25, 47, 0.95);
+    border: 2px solid var(--accent-color);
+    border-radius: var(--border-radius);
+    box-shadow: 0 0 30px rgba(100, 255, 218, 0.2);
     padding: 2rem;
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 1000;
-    animation: modalFadeIn 0.3s ease-in-out;
+    min-width: 300px;
+    max-width: 90%;
+    animation: modalFadeIn 0.3s ease-out;
+    backdrop-filter: blur(10px);
+}
+
+.futuristic-modal h2 {
+    color: var(--text-color-dark);
+    margin-bottom: 1.5rem;
+    text-align: center;
+    animation: titleGlow 2s infinite alternate;
+}
+
+.futuristic-modal-content {
+    margin: 1.5rem 0;
+    color: var(--text-secondary-dark);
+    line-height: 1.6;
+}
+
+.futuristic-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+/* Light Mode Modal */
+body.light-mode .modal-overlay {
+    background: rgba(245, 248, 255, 0.85);
+}
+
+body.light-mode .futuristic-modal {
+    background: rgba(245, 248, 255, 0.95);
+    border-color: var(--primary-color-light);
+    box-shadow: 0 0 30px rgba(0, 102, 204, 0.2);
+}
+
+body.light-mode .futuristic-modal h2 {
+    color: var(--text-color-light);
+}
+
+body.light-mode .futuristic-modal-content {
+    color: var(--text-secondary-light);
+}
+
+/* Modal Animations */
+@keyframes overlayFadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
 @keyframes modalFadeIn {
@@ -110,12 +311,38 @@ h1, h2, h3 {
     }
 }
 
-/* Navigation bar */
+/* Modal Close Button */
+.modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    color: var(--text-color-dark);
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: all var(--transition-speed);
+}
+
+.modal-close:hover {
+    color: var(--accent-color);
+    transform: rotate(90deg);
+}
+
+body.light-mode .modal-close {
+    color: var(--text-color-light);
+}
+
+body.light-mode .modal-close:hover {
+    color: var(--primary-color-light);
+}
+
+/* Navigation and Footer */
 .futuristic-nav {
-    background: rgba(26, 31, 53, 0.95);
-    border-bottom: 1px solid var(--border-color);
-    box-shadow: var(--primary-glow);
-    padding: 1rem;
+    background: rgba(10, 25, 47, 0.95);
+    border-bottom: 2px solid var(--accent-color);
+    box-shadow: 0 0 20px rgba(100, 255, 218, 0.2);
+    padding: 1rem 2rem;
     position: fixed;
     top: 0;
     left: 0;
@@ -125,87 +352,265 @@ h1, h2, h3 {
     align-items: center;
     justify-content: space-between;
     z-index: 100;
+    backdrop-filter: blur(8px);
 }
 
-/* Footer */
+.futuristic-nav .logo {
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-color-dark);
+    text-shadow: 0 0 10px var(--accent-color);
+}
+
 .futuristic-footer {
-    background: rgba(26, 31, 53, 0.95);
-    border-top: 1px solid var(--border-color);
-    box-shadow: var(--primary-glow);
+    background: rgba(10, 25, 47, 0.95);
+    border-top: 2px solid var(--accent-color);
+    box-shadow: 0 0 20px rgba(100, 255, 218, 0.2);
     padding: 1rem;
     text-align: center;
     position: fixed;
     bottom: 0;
-    width: 100%;
+    left: 0;
+    right: 0;
+    backdrop-filter: blur(8px);
+    color: var(--text-secondary-dark);
+    font-size: 0.9rem;
+    letter-spacing: 1px;
 }
 
-/* Game board styles */
+/* Light mode navigation and footer */
+body.light-mode .futuristic-nav,
+body.light-mode .futuristic-footer {
+    background: rgba(245, 248, 255, 0.95);
+    border-color: var(--primary-color-light);
+    box-shadow: 0 0 20px rgba(0, 102, 204, 0.2);
+}
+
+body.light-mode .futuristic-nav .logo {
+    color: var(--text-color-light);
+    text-shadow: 0 0 10px var(--primary-color-light);
+}
+
+body.light-mode .futuristic-footer {
+    color: var(--text-secondary-light);
+}
+
+/* Game Board Container */
 .futuristic-game-board {
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    box-shadow: var(--border-glow);
+    background: rgba(10, 25, 47, 0.8);
+    border: 2px solid var(--accent-color);
+    border-radius: var(--border-radius);
+    box-shadow: 0 0 30px rgba(100, 255, 218, 0.15);
     margin: 2rem auto;
-    padding: 1rem;
+    padding: 2rem;
+    position: relative;
+    backdrop-filter: blur(10px);
+    animation: boardFadeIn 0.5s ease-out;
 }
 
-/* Timer styles */
+body.light-mode .futuristic-game-board {
+    background: rgba(245, 248, 255, 0.9);
+    border-color: var(--primary-color-light);
+    box-shadow: 0 0 30px rgba(0, 102, 204, 0.15);
+}
+
+/* Timer Display */
 .futuristic-timer {
-    background: rgba(33, 150, 243, 0.1);
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    box-shadow: var(--primary-glow);
-    display: inline-block;
+    background: rgba(100, 255, 218, 0.05);
+    border: 2px solid var(--accent-color);
+    border-radius: var(--border-radius);
+    box-shadow: 0 0 15px rgba(100, 255, 218, 0.3);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     font-family: var(--font-primary);
-    font-size: 1.5rem;
+    font-size: 2rem;
+    font-weight: 600;
+    letter-spacing: 2px;
     margin: 1rem;
-    padding: 0.5rem 1rem;
+    padding: 0.75rem 1.5rem;
+    color: var(--text-color-dark);
+    text-shadow: 0 0 10px var(--accent-color);
+    min-width: 180px;
 }
 
-/* Leaderboard styles */
+body.light-mode .futuristic-timer {
+    background: rgba(0, 102, 204, 0.05);
+    border-color: var(--primary-color-light);
+    box-shadow: 0 0 15px rgba(0, 102, 204, 0.3);
+    color: var(--text-color-light);
+    text-shadow: 0 0 10px var(--primary-color-light);
+}
+
+/* Leaderboard Component */
 .futuristic-leaderboard {
-    background: rgba(26, 31, 53, 0.95);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    box-shadow: var(--border-glow);
+    background: rgba(10, 25, 47, 0.9);
+    border: 2px solid var(--accent-color);
+    border-radius: var(--border-radius);
+    box-shadow: 0 0 30px rgba(100, 255, 218, 0.15);
     margin: 2rem auto;
     max-width: 800px;
-    padding: 1rem;
+    padding: 2rem;
+    backdrop-filter: blur(10px);
+}
+
+.futuristic-leaderboard h2 {
+    color: var(--text-color-dark);
+    text-align: center;
+    margin-bottom: 2rem;
+    animation: titleGlow 2s infinite alternate;
 }
 
 .futuristic-leaderboard table {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0 0.5rem;
 }
 
 .futuristic-leaderboard th {
-    border-bottom: 1px solid var(--border-color);
+    color: var(--accent-color);
+    font-size: 1.1rem;
+    letter-spacing: 2px;
     padding: 1rem;
     text-align: left;
-    text-shadow: var(--text-glow);
+    text-transform: uppercase;
+    border-bottom: 2px solid var(--accent-color);
+    text-shadow: 0 0 10px var(--accent-color);
 }
 
 .futuristic-leaderboard td {
-    padding: 0.75rem 1rem;
-    transition: background-color var(--transition-speed);
+    padding: 1rem;
+    color: var(--text-color-dark);
+    background: rgba(100, 255, 218, 0.05);
+    border-bottom: 1px solid rgba(100, 255, 218, 0.1);
+    transition: all var(--transition-speed);
 }
 
-.futuristic-leaderboard tr:hover {
-    background: rgba(66, 220, 255, 0.1);
+.futuristic-leaderboard tr:hover td {
+    background: rgba(100, 255, 218, 0.1);
+    transform: translateX(5px);
+    box-shadow: -5px 0 10px rgba(100, 255, 218, 0.2);
 }
 
-/* Responsive design */
+.futuristic-leaderboard td:first-child {
+    border-top-left-radius: var(--border-radius);
+    border-bottom-left-radius: var(--border-radius);
+}
+
+.futuristic-leaderboard td:last-child {
+    border-top-right-radius: var(--border-radius);
+    border-bottom-right-radius: var(--border-radius);
+}
+
+/* Light Mode Leaderboard */
+body.light-mode .futuristic-leaderboard {
+    background: rgba(245, 248, 255, 0.9);
+    border-color: var(--primary-color-light);
+    box-shadow: 0 0 30px rgba(0, 102, 204, 0.15);
+}
+
+body.light-mode .futuristic-leaderboard h2 {
+    color: var(--text-color-light);
+}
+
+body.light-mode .futuristic-leaderboard th {
+    color: var(--primary-color-light);
+    border-bottom-color: var(--primary-color-light);
+    text-shadow: 0 0 10px var(--primary-color-light);
+}
+
+body.light-mode .futuristic-leaderboard td {
+    color: var(--text-color-light);
+    background: rgba(0, 102, 204, 0.05);
+    border-bottom-color: rgba(0, 102, 204, 0.1);
+}
+
+body.light-mode .futuristic-leaderboard tr:hover td {
+    background: rgba(0, 102, 204, 0.1);
+    box-shadow: -5px 0 10px rgba(0, 102, 204, 0.2);
+}
+
+/* Animations */
+@keyframes boardFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
-    .futuristic-select {
-        width: 100%;
+    h1 {
+        font-size: 2rem;
+    }
+    
+    .subtitle {
+        font-size: 1rem;
     }
     
     .futuristic-button {
         width: 100%;
         margin: 0.5rem 0;
+        min-width: unset;
+    }
+    
+    .futuristic-select {
+        width: 100%;
+    }
+    
+    .futuristic-timer {
+        font-size: 1.5rem;
+        min-width: 140px;
     }
     
     .futuristic-modal {
         width: 90%;
-        margin: 0 auto;
+        padding: 1.5rem;
+    }
+    
+    .futuristic-leaderboard {
+        padding: 1rem;
+        margin: 1rem;
+    }
+    
+    .futuristic-leaderboard th,
+    .futuristic-leaderboard td {
+        padding: 0.75rem 0.5rem;
+        font-size: 0.9rem;
+    }
+    
+    #game-screen {
+        padding: 1rem;
+    }
+    
+    #menu {
+        flex-direction: column;
+    }
+}
+
+/* Mobile Optimization */
+@media (max-width: 480px) {
+    body {
+        padding: 60px 0 50px;
+    }
+    
+    .futuristic-nav {
+        height: 50px;
+        padding: 0.5rem 1rem;
+    }
+    
+    .futuristic-footer {
+        padding: 0.5rem;
+    }
+    
+    .futuristic-button {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
     }
 }

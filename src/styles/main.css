@@ -173,7 +173,7 @@ h2 {
     font-size: 16px;
     border-radius: 4px;
     border: 1px solid #ccc;
-    background-color: white;
+    background-color: var(--dark-square);
     cursor: pointer;
 }
 
