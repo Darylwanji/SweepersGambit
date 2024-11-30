@@ -1,0 +1,211 @@
+/* Shared Futuristic Theme Components */
+
+/* Base theme variables */
+:root {
+    --primary-gradient: linear-gradient(135deg, #1a1f35 0%, #2a3657 100%);
+    --primary-glow: 0 0 10px rgba(66, 220, 255, 0.5);
+    --text-glow: 0 0 8px rgba(66, 220, 255, 0.3);
+    --border-glow: 0 0 15px rgba(66, 220, 255, 0.4);
+    --primary-color: #42dcff;
+    --secondary-color: #2196f3;
+    --background-dark: #1a1f35;
+    --background-light: #f0f4ff;
+    --text-color: #ffffff;
+    --font-primary: 'Rajdhani', sans-serif;
+    --transition-speed: 0.3s;
+}
+
+/* Dark mode variables */
+[data-theme="dark"] {
+    --background-color: var(--background-dark);
+    --text-color: #ffffff;
+    --border-color: rgba(66, 220, 255, 0.3);
+}
+
+/* Light mode variables */
+[data-theme="light"] {
+    --background-color: var(--background-light);
+    --text-color: #1a1f35;
+    --border-color: rgba(33, 150, 243, 0.3);
+}
+
+/* Base styles */
+body {
+    background: var(--primary-gradient);
+    color: var(--text-color);
+    font-family: var(--font-primary);
+    margin: 0;
+    padding: 80px 0 60px;  /* Space for fixed nav and footer */
+    transition: background-color var(--transition-speed);
+    min-height: 100vh;
+}
+
+/* Typography */
+h1, h2, h3 {
+    text-shadow: var(--text-glow);
+    margin-bottom: 1rem;
+}
+
+/* Buttons */
+.futuristic-button {
+    background: rgba(33, 150, 243, 0.1);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    color: var(--text-color);
+    cursor: pointer;
+    font-family: var(--font-primary);
+    font-size: 1rem;
+    margin: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    transition: all var(--transition-speed);
+    box-shadow: var(--primary-glow);
+}
+
+.futuristic-button:hover {
+    background: rgba(66, 220, 255, 0.2);
+    box-shadow: var(--border-glow);
+    transform: scale(1.05);
+}
+
+/* Dropdowns */
+.futuristic-select {
+    background: rgba(33, 150, 243, 0.1);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    color: var(--text-color);
+    font-family: var(--font-primary);
+    padding: 0.5rem;
+    width: 200px;
+    transition: all var(--transition-speed);
+}
+
+.futuristic-select:hover {
+    border-color: var(--primary-color);
+    box-shadow: var(--primary-glow);
+}
+
+/* Modal windows */
+.futuristic-modal {
+    background: rgba(26, 31, 53, 0.95);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: var(--border-glow);
+    padding: 2rem;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    animation: modalFadeIn 0.3s ease-in-out;
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -48%);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+/* Navigation bar */
+.futuristic-nav {
+    background: rgba(26, 31, 53, 0.95);
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: var(--primary-glow);
+    padding: 1rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 100;
+}
+
+/* Footer */
+.futuristic-footer {
+    background: rgba(26, 31, 53, 0.95);
+    border-top: 1px solid var(--border-color);
+    box-shadow: var(--primary-glow);
+    padding: 1rem;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+/* Game board styles */
+.futuristic-game-board {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: var(--border-glow);
+    margin: 2rem auto;
+    padding: 1rem;
+}
+
+/* Timer styles */
+.futuristic-timer {
+    background: rgba(33, 150, 243, 0.1);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    box-shadow: var(--primary-glow);
+    display: inline-block;
+    font-family: var(--font-primary);
+    font-size: 1.5rem;
+    margin: 1rem;
+    padding: 0.5rem 1rem;
+}
+
+/* Leaderboard styles */
+.futuristic-leaderboard {
+    background: rgba(26, 31, 53, 0.95);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: var(--border-glow);
+    margin: 2rem auto;
+    max-width: 800px;
+    padding: 1rem;
+}
+
+.futuristic-leaderboard table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.futuristic-leaderboard th {
+    border-bottom: 1px solid var(--border-color);
+    padding: 1rem;
+    text-align: left;
+    text-shadow: var(--text-glow);
+}
+
+.futuristic-leaderboard td {
+    padding: 0.75rem 1rem;
+    transition: background-color var(--transition-speed);
+}
+
+.futuristic-leaderboard tr:hover {
+    background: rgba(66, 220, 255, 0.1);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .futuristic-select {
+        width: 100%;
+    }
+    
+    .futuristic-button {
+        width: 100%;
+        margin: 0.5rem 0;
+    }
+    
+    .futuristic-modal {
+        width: 90%;
+        margin: 0 auto;
+    }
+}

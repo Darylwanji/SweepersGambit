@@ -1,0 +1,104 @@
+/* Shared animations for futuristic theme */
+@keyframes glow {
+    0% {
+        box-shadow: 0 0 5px var(--primary-color);
+    }
+    50% {
+        box-shadow: 0 0 20px var(--primary-color);
+    }
+    100% {
+        box-shadow: 0 0 5px var(--primary-color);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Apply animations to elements */
+.futuristic-timer {
+    animation: glow 2s infinite;
+}
+
+.game-win, .game-over {
+    animation: slideIn 0.5s ease-out;
+}
+
+.leaderboard-update {
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* Hover animations */
+.futuristic-button:hover {
+    animation: pulse 0.3s ease-in-out;
+}
+
+.menu-screen .futuristic-button {
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* Game board animations */
+.cell-revealed {
+    animation: fadeIn 0.2s ease-out;
+}
+
+.mine-exploded {
+    animation: glow 0.5s ease-out;
+}
+
+/* Loading states */
+.loading::after {
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--primary-color);
+    border-radius: 50%;
+    border-top-color: transparent;
+    animation: spin 1s infinite linear;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Theme transition animations */
+[data-theme] * {
+    transition: background-color 0.3s ease,
+                color 0.3s ease,
+                border-color 0.3s ease,
+                box-shadow 0.3s ease;
+}

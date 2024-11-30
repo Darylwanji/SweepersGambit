@@ -4,23 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sweeper's Gambit - Game</title>
+    <link rel="stylesheet" href="styles/shared-futuristic.css">
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/leaderboard.css">
     <link rel="stylesheet" href="styles/game-layout.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <h1>Sweeper's Gambit</h1>
+    <nav class="futuristic-nav">
+        <button id="dark-mode-toggle" class="futuristic-button">
+            <i class="fas fa-moon"></i>
+        </button>
+        <h1>Sweeper's Gambit</h1>
+    </nav>
     
     <div id="game-screen">
         <div id="menu">
             <label for="mode">Game Mode:</label>
-            <select id="mode">
+            <select id="mode" class="futuristic-select">
                 <option value="classic">Classic</option>
                 <option value="survival">Survival</option>
             </select>
 
             <label for="movement">Movement Type:</label>
-            <select id="movement">
+            <select id="movement" class="futuristic-select">
                 <option value="king" selected>King</option>
                 <option value="bishop">Bishop</option>
                 <option value="rook">Rook</option>
@@ -28,40 +36,64 @@
             </select>
 
             <label for="difficulty">Difficulty:</label>
-            <select id="difficulty">
+            <select id="difficulty" class="futuristic-select">
                 <option value="easy">Easy</option>
                 <option value="medium" selected>Medium</option>
                 <option value="hard">Hard</option>
             </select>
             
             <label for="theme">Theme:</label>
-            <select id="theme">
+            <select id="theme" class="futuristic-select">
                 <option value="classic">Classic Green</option>
                 <option value="blue">Ocean Blue</option>
                 <option value="purple">Royal Purple</option>
                 <option value="wood">Wooden</option>
             </select>
             
-            <button id="restart-button">Restart</button>
-            <button id="music-toggle" class="menu-button">🎵 Music Off</button>
-            <button id="sound-toggle" class="menu-button">🔊 Sound On</button>
-            <button onclick="window.location.href='index.html'" class="menu-button">Back to Menu</button>
+            <button id="restart-button" class="futuristic-button">
+                <i class="fas fa-redo"></i> Restart
+            </button>
+            <button id="music-toggle" class="futuristic-button">
+                <i class="fas fa-music"></i> Music Off
+            </button>
+            <button id="sound-toggle" class="futuristic-button">
+                <i class="fas fa-volume-up"></i> Sound On
+            </button>
+            <button onclick="window.location.href='index.html'" class="futuristic-button">
+                <i class="fas fa-arrow-left"></i> Back to Menu
+            </button>
         </div>
 
         <div id="game-content">
-            <div id="timer" class="timer">Time: 00:00</div>
+            <div id="timer" class="futuristic-timer">Time: 00:00</div>
             <div id="game-container">
                 <div id="current-movement"></div>
                 <div id="game-board"></div>
                 <div id="message"></div>
             </div>
-            <div id="leaderboard" class="leaderboard">
+            <div id="leaderboard" class="futuristic-leaderboard">
                 <h2>Leaderboard</h2>
-                <div id="leaderboard-entries"></div>
+                <table id="leaderboard-entries">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Player</th>
+                            <th>Score</th>
+                            <th>Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 
+    <footer class="futuristic-footer">
+        <p>&copy; 2024 Sweeper's Gambit. All rights reserved.</p>
+    </footer>
+
+    <script src="scripts/theme-handler.js"></script>
     <script src="scripts/game/core/movement.js"></script>
     <script src="scripts/game/core/survival.js"></script>
     <script src="scripts/game/core/leaderboard.js"></script>

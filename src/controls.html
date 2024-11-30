@@ -4,21 +4,53 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sweeper's Gambit - Controls</title>
-  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="styles/shared-futuristic.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/animations.css">
+    <link rel="stylesheet" href="styles/game-specific.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-  <h1>Sweeper's Gambit</h1>
+  <nav class="futuristic-nav">
+    <button id="dark-mode-toggle" class="futuristic-button">
+      <i class="fas fa-moon"></i>
+    </button>
+    <h1>Sweeper's Gambit</h1>
+  </nav>
   
   <div id="controls-screen">
     <h2>Controls</h2>
     <div class="controls-info">
       <!-- Add your control instructions here -->
-      <p>Left Click: Reveal Cell</p>
-      <p>Right Click: Flag Cell</p>
-      <p>Double Click: Quick Reveal</p>
+      <div class="control-section futuristic-game-board">
+        <h2>Game Controls</h2>
+        <ul class="controls-list">
+          <li class="tooltip">
+            <i class="fas fa-mouse-pointer"></i> Left Click
+            <span class="tooltip-text">Reveals the selected cell</span>
+          </li>
+          <li class="tooltip">
+            <i class="fas fa-flag"></i> Right Click
+            <span class="tooltip-text">Marks potential mine locations</span>
+          </li>
+          <li class="tooltip">
+            <i class="fas fa-mouse"></i> Double Click
+            <span class="tooltip-text">Quick reveal of surrounding cells</span>
+          </li>
+        </ul>
+      </div>
       <!-- Add more controls as needed -->
       
-      <button onclick="window.location.href='index.html'" class="menu-button">Back to Menu</button>
+      <button onclick="window.location.href='index.html'" class="futuristic-button">
+      <i class="fas fa-arrow-left"></i> Back to Menu
+    </button>
+    
+    <footer class="futuristic-footer">
+      <p>&copy; 2024 Sweeper's Gambit. All rights reserved.</p>
+    </footer>
+    
+    <script src="scripts/theme-handler.js"></script>
     </div>
   </div>
 </body>

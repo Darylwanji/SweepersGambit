@@ -1,0 +1,208 @@
+/* Game-specific styles using futuristic theme */
+
+/* Content container adjustments */
+.game-screen,
+.controls-screen,
+.main-menu {
+    padding: 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Game menu layout */
+#menu {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+/* Movement display */
+#current-movement {
+    position: relative;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    color: var(--primary-color);
+    text-shadow: var(--text-glow);
+}
+
+/* Game messages */
+#message {
+    font-size: 1.2rem;
+    margin: 1rem 0;
+    text-align: center;
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* Game board container */
+#game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Game board cells */
+.cell {
+    transition: all var(--transition-speed);
+    border: 1px solid var(--border-color);
+}
+
+.cell:hover {
+    box-shadow: inset 0 0 10px var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.cell.revealed {
+    animation: fadeIn 0.2s ease-out;
+}
+
+/* Chess board styling */
+.chess-board {
+    background: rgba(26, 31, 53, 0.95);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: var(--border-glow);
+    margin: 2rem auto;
+    padding: 1rem;
+    max-width: 600px;
+}
+
+.chess-square {
+    transition: all var(--transition-speed);
+    border: 1px solid transparent;
+}
+
+.chess-square:hover {
+    box-shadow: inset 0 0 15px var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.chess-piece {
+    transition: transform var(--transition-speed);
+}
+
+.chess-piece:hover {
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 5px var(--primary-color));
+}
+
+/* Game state modals */
+.game-modal {
+    background: rgba(26, 31, 53, 0.98);
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: var(--border-glow),
+                inset 0 0 30px rgba(66, 220, 255, 0.2);
+    color: var(--text-color);
+    padding: 2rem;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    min-width: 300px;
+    text-align: center;
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+.game-modal h2 {
+    color: var(--primary-color);
+    text-shadow: var(--text-glow);
+    margin-bottom: 1.5rem;
+}
+
+.game-modal .score {
+    font-size: 2rem;
+    font-weight: 600;
+    margin: 1rem 0;
+    color: var(--primary-color);
+    text-shadow: var(--text-glow);
+}
+
+.game-modal .message {
+    margin: 1rem 0;
+    font-size: 1.2rem;
+}
+
+.game-modal .buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+@keyframes modalSlideIn {
+    from {
+        transform: translate(-50%, -60%);
+        opacity: 0;
+    }
+    to {
+        transform: translate(-50%, -50%);
+        opacity: 1;
+    }
+}
+
+/* Game control indicators */
+.movement-indicator {
+    background: rgba(33, 150, 243, 0.1);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    color: var(--text-color);
+    display: inline-block;
+    font-family: var(--font-primary);
+    font-size: 1.2rem;
+    margin: 0.5rem;
+    padding: 0.5rem 1rem;
+    text-shadow: var(--text-glow);
+    animation: glow 2s infinite;
+}
+
+.game-stat {
+    background: rgba(33, 150, 243, 0.1);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    margin: 0.5rem;
+    font-family: var(--font-primary);
+}
+
+.game-stat i {
+    color: var(--primary-color);
+}
+
+/* Help tooltips */
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltip-text {
+    visibility: hidden;
+    background: rgba(26, 31, 53, 0.95);
+    color: var(--text-color);
+    text-align: center;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--primary-glow);
+    
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    
+    opacity: 0;
+    transition: opacity var(--transition-speed);
+}
+
+.tooltip:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}

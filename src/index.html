@@ -4,24 +4,41 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sweeper's Gambit</title>
+  <link rel="stylesheet" href="styles/shared-futuristic.css">
   <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-  <h1>Sweeper's Gambit</h1>
+  <nav class="futuristic-nav">
+    <button id="dark-mode-toggle" class="futuristic-button">
+      <i class="fas fa-moon"></i>
+    </button>
+    <h1>Sweeper's Gambit</h1>
+    <div class="subtitle">Choose your challenge</div>
+  </nav>
   
 <!-- Main Menu -->
 <div id="main-menu" class="menu-screen">
   <div class="menu-options">
     <div class="game-selection">
-      <button onclick="window.location.href='game.html'" class="menu-button">Minesweeper</button>
-      <button onclick="window.location.href='Chess/Chessindex.html'" class="menu-button">Chess vs AI</button>
+      <button onclick="window.location.href='game.html'" class="futuristic-button">
+        <i class="fas fa-chess-board"></i> Minesweeper Mode
+      </button>
+      <button onclick="window.location.href='Chess/Chessindex.html'" class="futuristic-button">
+        <i class="fas fa-chess"></i> Chess vs AI
+      </button>
     </div>
-    <button onclick="window.location.href='controls.html'" class="menu-button">Controls</button>
-    <button id="quit-button" class="menu-button">Quit</button>
+    <button onclick="window.location.href='controls.html'" class="futuristic-button">
+      <i class="fas fa-gamepad"></i> Controls
+    </button>
+    <button id="quit-button" class="futuristic-button">
+      <i class="fas fa-power-off"></i> Quit
+    </button>
   </div>
   <div id="theme-selector">
     <label for="theme">Theme:</label>
-    <select id="theme">
+    <select id="theme" class="futuristic-select">
       <option value="classic">Classic Green</option>
       <option value="blue">Ocean Blue</option>
       <option value="purple">Royal Purple</option>
@@ -30,27 +47,36 @@
   </div>
 </div>
 
+<footer class="futuristic-footer">
+  <p>&copy; 2024 Sweeper's Gambit. All rights reserved.</p>
+</footer>
+
   <!-- Game Screen -->
   <div id="game-screen" class="hidden">
     <div id="menu">
       <label for="difficulty">Difficulty:</label>
-      <select id="difficulty">
+      <select id="difficulty" class="futuristic-select">
         <option value="easy">Easy</option>
         <option value="medium" selected>Medium</option>
         <option value="hard">Hard</option>
       </select>
-      <button id="restart-button">Restart</button>
+      <button id="restart-button" class="futuristic-button">
+        <i class="fas fa-redo"></i> Restart
+      </button>
     </div>
-    <div id="game-container">
+    <div id="game-container" class="futuristic-game-board">
       <div id="game-board"></div>
     </div>
     <div id="message"></div>
-    <button id="back-to-menu">Back to Menu</button>
+    <button id="back-to-menu" class="futuristic-button">
+      <i class="fas fa-arrow-left"></i> Back to Menu
+    </button>
   </div>
 
   <!-- Controls Screen -->
   <!-- Controls moved to controls.html -->
 
   <script src="scripts/game/core/script.js"></script>
+  <script src="scripts/theme-handler.js"></script>
 </body>
 </html>
