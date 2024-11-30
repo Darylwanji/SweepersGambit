@@ -1,0 +1,57 @@
+
+**Prompt for AI:**  
+
+I am building a futuristic-themed main menu for my game called **Sweeper's Gambit**, inspired by the following reference image:  
+*Description of the reference image*:  
+- A sleek and modern menu with a dark blue gradient background transitioning to a lighter blue tone.  
+- The title "Sweeper's Gambit" is prominently displayed in large, futuristic text with a glowing effect.  
+- Below the title is a subtitle: "Choose your challenge," written in smaller, simple, and modern text.  
+- The menu contains large, evenly spaced buttons for:  
+  1. Minesweeper  
+  2. Chess vs AI  
+  3. Controls  
+  4. Quit  
+- Each button is rectangular with rounded edges and includes an icon representing its function.  
+- At the bottom, there is a dropdown menu labeled "Theme" with a futuristic style.  
+- A moon icon in the top-right corner suggests a toggle for light/dark mode.  
+
+### **Requirements for the Menu**  
+
+1. **General Styling**:  
+   - Use a dark blue gradient background with smooth transitions.  
+   - Ensure the title "Sweeper's Gambit" is displayed in a large, glowing futuristic font with a neon effect.  
+   - Use consistent font styles for buttons and subtitles to match the futuristic theme.  
+
+2. **Button Animations**:  
+   - Buttons should have futuristic hover and click animations:  
+     - On hover, buttons should glow or have a ripple effect.  
+     - On click, include a smooth shrinking/expanding animation or a subtle particle effect around the button.  
+   - Add relevant icons inside the buttons (e.g., a grid for Minesweeper, a calendar for Chess vs AI, etc.).  
+
+3. **Theme Dropdown**:  
+   - The theme dropdown should blend with the futuristic theme and have smooth opening/closing animations.  
+   - Add a glowing border when selected.  
+
+4. **Dark Mode Toggle**:  
+   - Include a moon icon in the top-right corner that toggles light/dark mode when clicked.  
+   - Light mode should have a white-to-light-blue gradient background while preserving the futuristic style.  
+
+5. **Consistency Across the Project**:  
+   - Ensure the visual style, fonts, and animations are consistent across all game screens (e.g., gameplay screens, leaderboards, and settings).  
+   - All UI components, such as buttons, icons, and dropdowns, should follow the same futuristic theme and animation logic.  
+   - Use reusable styles and animations through CSS classes or shared JavaScript logic to maintain uniformity.  
+
+6. **Responsive Design**:  
+   - The menu should be fully responsive, maintaining its design on various screen sizes, including desktops, tablets, and mobile devices.  
+
+7. **Code Requirements**:  
+   - Provide the complete HTML, CSS, and JavaScript code to implement this menu.  
+   - Ensure clean, reusable, and well-commented code for future modifications.  
+   - Use modular code practices to allow easy application of the menu's design elements to other parts of the project.  
+
+### Additional Notes  
+- Focus heavily on visual appeal and smooth animations for all interactive elements.  
+- Ensure all icons and text are centered and aligned properly within their respective containers.  
+- Consistency in style is crucial—this menu should set the standard for the rest of the game's UI.  
+
+Let me know if you need clarification or further refinements!  
