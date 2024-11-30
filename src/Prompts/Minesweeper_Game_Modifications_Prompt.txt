@@ -1,0 +1,39 @@
+
+I have a working Minesweeper game written in HTML, CSS, and JavaScript. The current game uses the traditional King's movement rule for checking mines around a tile. I want to enhance the game with additional features and modes. Here's what I need:  
+
+### **New Features**  
+
+1. **Dynamic Movement Mechanics**:  
+   - Allow the user to choose one of the following mechanics at the start of the game or switch during the game:  
+     - **King's movement**: One tile in any direction.  
+     - **Bishop's movement**: Diagonally, unlimited tiles until hitting the board edge.  
+     - **Rook's movement**: Vertically and horizontally, unlimited tiles until hitting the board edge.  
+     - **Knight's movement**: L-shaped jumps (two tiles in one direction and one tile perpendicular to it).  
+
+2. **Survival Mode**:  
+   - The game starts on a small 6x6 board and progressively increases in size after the player successfully completes the current board.  
+   - Minimum board size: **6x6**.  
+   - Maximum board size: **32x32**.  
+   - **Timer Functionality**: The timer starts when the game begins and continues running across all levels until the user completes the final level (32x32).  
+   - Once the player finishes the 32x32 board, prompt them to enter their name to save their time in a **leaderboard**.  
+
+3. **Leaderboard**:  
+   - Save the player's name and completion time for the survival mode.  
+   - Display the leaderboard on a separate screen or section, showing the top scores.  
+
+4. **Visual and UX Enhancements**:  
+   - Show the current movement mechanic visually (e.g., text or an icon near the board).  
+   - Highlight the tiles affected by the current movement mechanic when hovering over a tile or selecting it.  
+   - Add buttons or a dropdown menu to let the user manually switch mechanics if desired.  
+
+5. **Game Rules**:  
+   - Ensure all existing Minesweeper functionality (mine placement, win/lose conditions) remains intact.  
+   - Allow users to restart the game or return to the main menu to select a new mode.  
+
+### **Technical Details**  
+
+- Provide the updated JavaScript code for the movement logic, timer, leaderboard, and level progression.  
+- Add necessary HTML and CSS updates to integrate these features.  
+- Ensure the game remains responsive and visually appealing on different screen sizes.  
+
+Let me know if you need more clarification!

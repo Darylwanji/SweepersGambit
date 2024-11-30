@@ -226,8 +226,23 @@ let gameOver = false;
 function initGame() {
     const gameBoard = document.getElementById('game-board');
     const message = document.getElementById('message');
+    const modeSelect = document.getElementById('mode');
     const difficultySelect = document.getElementById('difficulty');
+    const movementSelect = document.getElementById('movement');
     updateLeaderboard();
+    
+    // Handle game mode
+    const gameMode = modeSelect.value;
+    if (gameMode === 'survival' && !gameOver) {
+        difficultySelect.disabled = true;
+        if (!currentLevel) {
+            initSurvivalMode();
+            return;
+        }
+    } else {
+        difficultySelect.disabled = false;
+        updateDifficulty();
+    }
 
     // Reset timer
     if (timerInterval) {
@@ -266,6 +281,13 @@ function initGame() {
             cell.addEventListener('contextmenu', (e) => {
                 e.preventDefault();
                 flagCell(i, j);
+            });
+            cell.addEventListener('mouseenter', () => highlightMovementPattern(i, j));
+            cell.addEventListener('mouseleave', () => {
+                const cells = document.querySelectorAll('.cell');
+                cells.forEach(cell => {
+                    cell.classList.remove('highlight-king', 'highlight-bishop', 'highlight-rook', 'highlight-knight');
+                });
             });
         }
     }
@@ -399,6 +421,92 @@ function calculateSurroundingMinesRook() {
 }
 
 // Reveal cell
+function highlightMovementPattern(row, col) {
+    // Clear previous highlights
+    const cells = document.querySelectorAll('.cell');
+    cells.forEach(cell => {
+        cell.classList.remove('highlight-king', 'highlight-bishop', 'highlight-rook', 'highlight-knight');
+    });
+
+    const movementType = document.getElementById('movement').value;
+    const currentCell = document.querySelector(`[data-row="${row}"][data-col="${col}"]`);
+
+    switch (movementType) {
+        case 'bishop':
+            highlightBishopPattern(row, col);
+            break;
+        case 'rook':
+            highlightRookPattern(row, col);
+            break;
+        case 'knight':
+            highlightKnightPattern(row, col);
+            break;
+        case 'king':
+        default:
+            highlightKingPattern(row, col);
+            break;
+    }
+}
+
+function highlightKingPattern(row, col) {
+    for (let di = -1; di <= 1; di++) {
+        for (let dj = -1; dj <= 1; dj++) {
+            if (di === 0 && dj === 0) continue;
+            const ni = row + di;
+            const nj = col + dj;
+            if (ni >= 0 && ni < rows && nj >= 0 && nj < cols) {
+                const cell = document.querySelector(`[data-row="${ni}"][data-col="${nj}"]`);
+                cell.classList.add('highlight-king');
+            }
+        }
+    }
+}
+
+function highlightBishopPattern(row, col) {
+    const directions = [[-1, -1], [-1, 1], [1, -1], [1, 1]];
+    for (const [di, dj] of directions) {
+        let ni = row + di;
+        let nj = col + dj;
+        while (ni >= 0 && ni < rows && nj >= 0 && nj < cols) {
+            const cell = document.querySelector(`[data-row="${ni}"][data-col="${nj}"]`);
+            cell.classList.add('highlight-bishop');
+            ni += di;
+            nj += dj;
+        }
+    }
+}
+
+function highlightRookPattern(row, col) {
+    const directions = [[-1, 0], [1, 0], [0, -1], [0, 1]];
+    for (const [di, dj] of directions) {
+        let ni = row + di;
+        let nj = col + dj;
+        while (ni >= 0 && ni < rows && nj >= 0 && nj < cols) {
+            const cell = document.querySelector(`[data-row="${ni}"][data-col="${nj}"]`);
+            cell.classList.add('highlight-rook');
+            ni += di;
+            nj += dj;
+        }
+    }
+}
+
+function highlightKnightPattern(row, col) {
+    const directions = [
+        [-2, -1], [-2, 1],
+        [2, -1], [2, 1],
+        [-1, -2], [1, -2],
+        [-1, 2], [1, 2]
+    ];
+    for (const [di, dj] of directions) {
+        const ni = row + di;
+        const nj = col + dj;
+        if (ni >= 0 && ni < rows && nj >= 0 && nj < cols) {
+            const cell = document.querySelector(`[data-row="${ni}"][data-col="${nj}"]`);
+            cell.classList.add('highlight-knight');
+        }
+    }
+}
+
 function revealCell(row, col) {
     const cell = cells[row][col];
     if (gameOver || cell.revealed || cell.flagged) return;
@@ -453,13 +561,30 @@ function checkWin() {
     }
     
     if (unrevealedSafeCells === 0) {
-        endGame(true);
+        const gameMode = document.getElementById('mode').value;
+        if (gameMode === 'survival') {
+            if (rows < MAX_BOARD_SIZE) {
+                progressToNextLevel();
+            } else {
+                // Final level completed
+                const finalTime = stopTimer();
+                endGame(true);
+                const playerName = prompt("Congratulations! You've completed Survival Mode! Enter your name:");
+                if (playerName) {
+                    saveSurvivalScore(playerName, finalTime);
+                }
+            }
+        } else {
+            endGame(true);
+        }
     }
 }
 
 function endGame(won) {
     gameOver = true;
     const finalTime = stopTimer();
+    const currentMovementDiv = document.getElementById('current-movement');
+    currentMovementDiv.textContent = '';
     const difficulty = document.getElementById('difficulty').value;
     const message = document.getElementById('message');
     

@@ -13,6 +13,20 @@
     
     <div id="game-screen">
         <div id="menu">
+            <label for="mode">Game Mode:</label>
+            <select id="mode">
+                <option value="classic">Classic</option>
+                <option value="survival">Survival</option>
+            </select>
+
+            <label for="movement">Movement Type:</label>
+            <select id="movement">
+                <option value="king" selected>King</option>
+                <option value="bishop">Bishop</option>
+                <option value="rook">Rook</option>
+                <option value="knight">Knight</option>
+            </select>
+
             <label for="difficulty">Difficulty:</label>
             <select id="difficulty">
                 <option value="easy">Easy</option>
@@ -37,6 +51,7 @@
         <div id="game-content">
             <div id="timer" class="timer">Time: 00:00</div>
             <div id="game-container">
+                <div id="current-movement"></div>
                 <div id="game-board"></div>
                 <div id="message"></div>
             </div>
@@ -47,6 +62,10 @@
         </div>
     </div>
 
+    <script src="scripts/game/core/movement.js"></script>
+    <script src="scripts/game/core/survival.js"></script>
+    <script src="scripts/game/core/leaderboard.js"></script>
+    <script src="scripts/game/core/events.js"></script>
     <script src="scripts/game/core/script.js"></script>
 </body>
 </html>
