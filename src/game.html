@@ -16,47 +16,66 @@
     
     <div id="game-screen">
         <div id="menu">
-            <label for="mode">Game Mode:</label>
-            <select id="mode" class="futuristic-select">
-                <option value="classic">Classic</option>
-                <option value="survival">Survival</option>
-            </select>
+            <div class="menu-item">
+                <label for="mode">Game Mode:</label>
+                <select id="mode" class="futuristic-select">
+                    <option value="classic">Classic</option>
+                    <option value="survival">Survival</option>
+                </select>
+            </div>
 
-            <label for="movement">Movement Type:</label>
-            <select id="movement" class="futuristic-select">
-                <option value="king" selected>King</option>
-                <option value="bishop">Bishop</option>
-                <option value="rook">Rook</option>
-                <option value="knight">Knight</option>
-            </select>
+            <div class="menu-item">
+                <label for="movement">Movement Type:</label>
+                <select id="movement" class="futuristic-select">
+                    <option value="king" selected>King</option>
+                    <option value="bishop">Bishop</option>
+                    <option value="rook">Rook</option>
+                    <option value="knight">Knight</option>
+                </select>
+            </div>
 
-            <label for="difficulty">Difficulty:</label>
-            <select id="difficulty" class="futuristic-select">
-                <option value="easy">Easy</option>
-                <option value="medium" selected>Medium</option>
-                <option value="hard">Hard</option>
-            </select>
-            
-            <label for="theme">Theme:</label>
-            <select id="theme" class="futuristic-select">
-                <option value="classic">Classic Green</option>
-                <option value="blue">Ocean Blue</option>
-                <option value="purple">Royal Purple</option>
-                <option value="wood">Wooden</option>
-            </select>
-            
-            <button id="restart-button" class="futuristic-button">
-                <i class="fas fa-redo"></i> Restart
-            </button>
-            <button id="music-toggle" class="futuristic-button">
-                <i class="fas fa-music"></i> Music Off
-            </button>
-            <button id="sound-toggle" class="futuristic-button">
-                <i class="fas fa-volume-up"></i> Sound On
-            </button>
-            <button onclick="closeWindow()" class="futuristic-button">
-                <i class="fas fa-arrow-left"></i> Back to Menu
-            </button>
+            <div class="menu-item">
+                <label for="difficulty">Difficulty:</label>
+                <select id="difficulty" class="futuristic-select">
+                    <option value="easy">Easy</option>
+                    <option value="medium" selected>Medium</option>
+                    <option value="hard">Hard</option>
+                </select>
+            </div>
+
+            <div class="menu-item">
+                <label for="theme">Theme:</label>
+                <select id="theme" class="futuristic-select">
+                    <option value="classic">Classic Green</option>
+                    <option value="blue">Ocean Blue</option>
+                    <option value="purple">Royal Purple</option>
+                    <option value="wood">Wooden</option>
+                </select>
+            </div>
+
+            <div class="menu-item">
+                <button id="restart-button" class="futuristic-button">
+                    <i class="fas fa-redo"></i> Restart
+                </button>
+            </div>
+
+            <div class="menu-item">
+                <button id="music-toggle" class="futuristic-button">
+                    <i class="fas fa-music"></i> Music Off
+                </button>
+            </div>
+
+            <div class="menu-item">
+                <button id="sound-toggle" class="futuristic-button">
+                    <i class="fas fa-volume-up"></i> Sound On
+                </button>
+            </div>
+
+            <div class="menu-item">
+                <button onclick="closeWindow()" class="futuristic-button">
+                    <i class="fas fa-arrow-left"></i> Back to Menu
+                </button>
+            </div>
         </div>
 
         <div id="game-content">

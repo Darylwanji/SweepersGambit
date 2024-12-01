@@ -11,7 +11,7 @@
 
 /* Game menu layout */
 #menu {
-    display: flex;
+    display: felx;
     flex-wrap: wrap;
     gap: 1rem;
     align-items: center;

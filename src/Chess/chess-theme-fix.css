@@ -1,0 +1,25 @@
+/* Chess theme variables */
+:root[data-theme="light"] {
+    --board-bg-light: #f0d9b5;
+    --board-bg-dark: #b58863;
+    --piece-shadow: rgba(0, 0, 0, 0.2);
+}
+
+:root[data-theme="dark"] {
+    --board-bg-light: #d8d8d8;
+    --board-bg-dark: #58585a;
+    --piece-shadow: rgba(0, 0, 0, 0.4);
+}
+
+/* Override chessboard colors */
+.white-1e1d7 {
+    background-color: var(--board-bg-light) !important;
+}
+
+.black-3c85d {
+    background-color: var(--board-bg-dark) !important;
+}
+
+.piece-417db {
+    filter: drop-shadow(2px 2px 2px var(--piece-shadow));
+}

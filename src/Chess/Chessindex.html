@@ -6,10 +6,36 @@
     <link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css">
     <link rel="stylesheet" href="../styles/shared-futuristic.css">
     <link rel="stylesheet" href="chess-theme.css">
+    <link rel="stylesheet" href="chess-theme-fix.css">
     <link rel="stylesheet" href="Chessstyles.css">
-<script src="../scripts/theme-switcher.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const currentTheme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', currentTheme);
+        updateThemeIcon(currentTheme);
+        
+        const themeToggle = document.getElementById('theme-toggle');
+        if (themeToggle) {
+            themeToggle.addEventListener('click', () => {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                updateThemeIcon(newTheme);
+            });
+        }
+    });
+
+    function updateThemeIcon(theme) {
+        const icon = document.querySelector('#theme-toggle i');
+        if (icon) {
+            icon.className = theme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
+        }
+    }
+</script>
 </head>
-<body data-theme="dark">
+<body>
     <header class="futuristic-header">
         <h1>Chess vs AI</h1>
         <button id="theme-toggle" class="futuristic-button">
