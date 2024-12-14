@@ -1,0 +1,152 @@
+// Add game mode selector and mode-specific logic
+const gameModeSelect = document.getElementById('game-mode');
+let isAiGame = true;
+let isAiVsAi = false;
+
+gameModeSelect.addEventListener('change', function() {
+    const mode = gameModeSelect.value;
+    isAiGame = mode === 'ai' || mode === 'aivsai';
+    isAiVsAi = mode === 'aivsai';
+    
+    // Reset the game when mode changes
+    game.reset();
+    board.position(game.fen());
+    whiteMoveCount = 0;
+    blackMoveCount = 0;
+    mines = { 'w': [], 'b': [] };
+    inactiveMines = [];
+    removeAllMineHighlights();
+    
+    // Update UI elements visibility
+    document.getElementById('difficulty').style.display = isAiGame ? 'inline' : 'none';
+    
+    if (isAiVsAi) {
+        // Start AI vs AI game
+        setTimeout(makeAiMove, 250);
+    }
+});
+
+function removeAllMineHighlights() {
+    $('.square-55d63').removeClass('mined-square triggered-mine');
+}
+
+// Update onDragStart to handle different game modes
+function onDragStart(source, piece, position, orientation) {
+    // Allow moves only when it's player's turn in the current game mode
+    if (game.game_over()) return false;
+    
+    if (isAiVsAi) return false; // No manual moves in AI vs AI mode
+    
+    if (isAiGame && game.turn() === 'b') return false; // No moves during AI turn in PvAI mode
+    
+    // Check if the piece belongs to the current player
+    if (piece.search(/^[wb]/) === -1) return false;
+    
+    return piece[0] === game.turn();
+}
+
+// Update makeAiMove for AI vs AI mode
+function makeAiMove() {
+    if (game.game_over()) return;
+    
+    const currentPlayer = game.turn();
+    const isSecondAiPlayer = isAiVsAi && currentPlayer === 'w';
+    
+    if (!isAiGame || (!isAiVsAi && currentPlayer === 'w')) return;
+    
+    // Consider placing a mine before making a move
+    if (canPlaceMines() && mines[currentPlayer].length < minesPerPlayer) {
+        const aiLevel = parseInt(difficultySelect.value);
+        const shouldPlaceMine = Math.random() < (0.2 + (aiLevel * 0.1)); // Higher chance at higher difficulty
+        
+        if (shouldPlaceMine) {
+            const pieces = game.board();
+            let validSquares = [];
+            
+            // Find all squares with current player's pieces
+            for (let i = 0; i < 8; i++) {
+                for (let j = 0; j < 8; j++) {
+                    const piece = pieces[i][j];
+                    if (piece && piece.color === currentPlayer) {
+                        const square = String.fromCharCode(97 + j) + (8 - i);
+                        // Check if square is valid for mine placement
+                        const opponentKingMoves = getKingPossibleMoves(currentPlayer === 'w' ? 'b' : 'w');
+                        if (!opponentKingMoves.includes(square)) {
+                            validSquares.push(square);
+                        }
+                    }
+                }
+            }
+            
+            // Place mine on random valid square
+            if (validSquares.length > 0) {
+                const square = validSquares[Math.floor(Math.random() * validSquares.length)];
+                handleMinePlace(square);
+            }
+        }
+    }
+    
+    // Get current position
+    const fen = game.fen();
+    
+    // Set position for engine
+    stockfish.postMessage('position fen ' + fen);
+    
+    // Start calculating - adjust depth based on which AI is moving
+    const baseDepth = 12 + parseInt(difficultySelect.value) * 2;
+    const depth = isSecondAiPlayer ? Math.max(8, baseDepth - 4) : baseDepth; // Second AI plays slightly faster
+    stockfish.postMessage('go depth ' + depth);
+}
+
+// Update move handling in the stockfish.onmessage event
+stockfish.onmessage = function(event) {
+    const message = event.data;
+    
+    if (message.startsWith("bestmove")) {
+        const moveStr = message.split(" ")[1];
+        if (!moveStr) return;
+
+        const from = moveStr.slice(0, 2);
+        const to = moveStr.slice(2, 4);
+        const promotion = moveStr.length > 4 ? moveStr[4] : 'q';
+
+        // Make the AI move
+        const move = game.move({
+            from: from,
+            to: to,
+            promotion: promotion
+        });
+
+        if (move) {
+            // Check for mines
+            const opponentColor = game.turn() === 'w' ? 'b' : 'w';
+            if (mines[opponentColor].includes(to)) {
+                triggerMine(to);
+            }
+
+            // Update move counter
+            updateMoveCount(move.color);
+            
+            // Update board position
+            board.position(game.fen());
+
+            // Play sound
+            if (move.captured) {
+                playSound(captureSound);
+            } else {
+                playSound(moveSound);
+            }
+
+            // Update UI
+            updateStatus();
+            updateMoveHistory();
+            updateCapturedPieces();
+            highlightLastMove(from, to);
+
+            // Continue AI vs AI game
+            if (isAiVsAi && !game.game_over()) {
+                setTimeout(makeAiMove, 250);
+            }
+        }
+    }
+};

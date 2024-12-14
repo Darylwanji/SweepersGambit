@@ -1,0 +1,103 @@
+// Add move counter to track when mines can be placed
+let whiteMoveCount = 0;
+let blackMoveCount = 0;
+
+function canPlaceMines() {
+    return whiteMoveCount >= 4 && blackMoveCount >= 4;
+}
+
+function updateMoveCount(color) {
+    if (color === 'w') {
+        whiteMoveCount++;
+    } else {
+        blackMoveCount++;
+    }
+    
+    // Notify players when they become eligible to place mines
+    if (whiteMoveCount === 4 && blackMoveCount === 4) {
+        statusElement.textContent = "Both players can now place mines!";
+        setTimeout(() => updateStatus(), 2000);
+    }
+}
+
+function handleMinePlace(square) {
+    const currentPlayer = game.turn();
+    
+    // Check if enough moves have been made
+    if (!canPlaceMines()) {
+        alert('Mines can only be placed after both players have made at least 4 moves!');
+        return false;
+    }
+    
+    // Check if player can place more mines
+    if (mines[currentPlayer].length >= minesPerPlayer) {
+        alert('You have already placed all your mines!');
+        return false;
+    }
+    
+    // Validate square has a piece owned by the current player
+    const piece = game.get(square);
+    if (!piece || piece.color !== currentPlayer) {
+        alert('You can only place mines on squares with your own pieces!');
+        return false;
+    }
+    
+    // Check if square is in opponent king's moves
+    const opponentKingMoves = getKingPossibleMoves(currentPlayer === 'w' ? 'b' : 'w');
+    if (opponentKingMoves.includes(square)) {
+        alert('Cannot place mine within reach of opponent\'s king!');
+        return false;
+    }
+    
+    // Place the mine
+    mines[currentPlayer].push(square);
+    
+    // Visual feedback
+    $(`.square-${square}`).addClass('mined-square');
+    
+    // Notify opponent
+    const playerColor = currentPlayer === 'w' ? 'White' : 'Black';
+    statusElement.textContent = `${playerColor} placed a mine!`;
+    
+    return true;
+}
+
+function onDrop(source, target) {
+    removeHighlights();
+
+    // Make the move
+    const move = game.move({
+        from: source,
+        to: target,
+        promotion: 'q'
+    });
+
+    if (move === null) return 'snapback';
+
+    // Check if target square has a mine
+    const opponentColor = game.turn() === 'w' ? 'b' : 'w';
+    if (mines[opponentColor].includes(target)) {
+        // Trigger mine
+        triggerMine(target);
+    }
+
+    // Update move counter
+    updateMoveCount(move.color);
+    
+    // Update board position and UI
+    board.position(game.fen());
+    
+    if (move.captured) {
+        playSound(captureSound);
+    } else {
+        playSound(moveSound);
+    }
+
+    updateStatus();
+    updateMoveHistory();
+    updateCapturedPieces();
+    highlightLastMove(source, target);
+
+    // Make AI move after a delay
+    setTimeout(makeAiMove, 250);
+}
