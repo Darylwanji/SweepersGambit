@@ -4,70 +4,93 @@ let currentTime;
 
 // Sound System
 const SOUNDS = {
-    background: new Audio('../src/assets/audio/CheckmateDreams.mp3'),
-    click: new Audio('sounds/click.mp3'),
-    flag: new Audio('sounds/flag.mp3'),
-    gameOver: new Audio('sounds/game-over.mp3'),
-    win: new Audio('sounds/win.mp3')
+    background: new Audio('/assets/audio/CheckmateDreams.mp3'),
+    click: new Audio('/sounds/click.mp3'),
+    flag: new Audio('/sounds/flag.mp3'),
+    gameOver: new Audio('/sounds/game-over.mp3'),
+    win: new Audio('/sounds/win.mp3')
 };
+
+// Preload all sounds
+function preloadSounds() {
+    Object.values(SOUNDS).forEach(sound => {
+        sound.load();
+        // Set default volume
+        sound.volume = sound.src.includes('CheckmateDreams') ? 0.2 : 0.3;
+    });
+}
 
 // Sound settings
 let isMusicPlaying = false;
 let isSoundEnabled = true;
 
-// Initialize sound system
+// Add sound loading status tracking
+let soundsLoaded = false;
+
+// Initialize sound system with proper loading checks
 function initSoundSystem() {
+    preloadSounds();
+    
     // Set up background music
     SOUNDS.background.loop = true;
-    SOUNDS.background.volume = 0.2; // 20% volume for background music
 
-    SOUNDS.background.addEventListener('ended', () => {
-        if (isMusicPlaying) {
-            SOUNDS.background.currentTime = 0; // Reset to beginning
-            SOUNDS.background.play()
-                .catch(error => console.error('Error restarting music:', error));
-        }
-    });
-    
-    // Set up sound effects volume
-    SOUNDS.click.volume = 0.3;
-    SOUNDS.flag.volume = 0.3;
-    SOUNDS.gameOver.volume = 0.3;
-    SOUNDS.win.volume = 0.3;
-
-    // Load saved preferences
-    const savedMusicState = localStorage.getItem('music-enabled') === 'false';
-    const savedSoundState = localStorage.getItem('sound-enabled') !== 'false'; // Default to true
+    // Initialize with saved preferences
+    const savedMusicState = localStorage.getItem('music-enabled') === 'true';
+    const savedSoundState = localStorage.getItem('sound-enabled') !== 'false';
     
     isSoundEnabled = savedSoundState;
-    isMusicPlaying = savedMusicState; // Set initial music state
-    updateSoundButton();
+    isMusicPlaying = savedMusicState;
     
-    // Initialize music button event listener
-    const musicButton = document.getElementById('music-toggle');
-    if (musicButton) {
-        musicButton.addEventListener('click', toggleBackgroundMusic);
-        updateMusicButton();
-    }
+    // Add click listener to enable audio
+    document.addEventListener('click', function enableAudio() {
+        if (isMusicPlaying) {
+            const promise = SOUNDS.background.play();
+            if (promise !== undefined) {
+                promise.catch(error => {
+                    console.log("Autoplay prevented:", error);
+                });
+            }
+        }
+        document.removeEventListener('click', enableAudio);
+    }, { once: true });
 
-    // Initialize sound button event listener
-    const soundButton = document.getElementById('sound-toggle');
-    if (soundButton) {
-        soundButton.addEventListener('click', toggleSoundEffects);
-        updateSoundButton();
-    }
-
-    // Start playing music immediately
-    playBackgroundMusic();
+    updateSoundButton();
+    updateMusicButton();
 }
-// Play sound effect if enabled
+
+// Update the playSound function with better error handling
 function playSound(soundName) {
-    if (isSoundEnabled && SOUNDS[soundName]) {
+    if (!isSoundEnabled || !soundsLoaded) return;
+    
+    const sound = SOUNDS[soundName];
+    if (!sound) {
+        console.error(`Sound ${soundName} not found`);
+        return;
+    }
+
+    try {
         // Create a new audio instance for overlapping sounds
         if (soundName !== 'background') {
-            const sound = SOUNDS[soundName].cloneNode();
-            sound.play().catch(error => console.error('Error playing sound:', error));
+            const newSound = sound.cloneNode();
+            newSound.volume = sound.volume;
+            const playPromise = newSound.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                    console.warn('Sound play failed:', error);
+                });
+            }
+        } else {
+            // Handle background music separately
+            const playPromise = sound.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                    console.warn('Background music play failed:', error);
+                });
+            }
         }
+    } catch (error) {
+        console.error('Error playing sound:', error);
     }
 }
 
@@ -742,3 +765,94 @@ function getBestTime(difficulty) {
     const times = leaderboard[difficulty] || [];
     return times.length > 0 ? times[0] : null;
 }
+
+// Add user interaction handler for autoplay policy
+function initializeAudioContext() {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    const audioContext = new AudioContext();
+    
+    // Resume audio context on user interaction
+    document.addEventListener('click', function resumeAudio() {
+        if (audioContext.state === 'suspended') {
+            audioContext.resume();
+        }
+        // Try playing background music if it was enabled
+        if (isMusicPlaying) {
+            playBackgroundMusic();
+        }
+        document.removeEventListener('click', resumeAudio);
+    }, { once: true });
+}
+
+// Add this function to retry loading sounds
+function retryLoadSound(sound, maxRetries = 3) {
+    let retries = 0;
+    
+    function attemptLoad() {
+        sound.load();
+        return new Promise((resolve, reject) => {
+            sound.addEventListener('canplaythrough', resolve, { once: true });
+            sound.addEventListener('error', (error) => {
+                if (retries < maxRetries) {
+                    retries++;
+                    console.log(`Retrying sound load, attempt ${retries}`);
+                    setTimeout(attemptLoad, 1000);
+                } else {
+                    reject(error);
+                }
+            }, { once: true });
+        });
+    }
+    
+    return attemptLoad();
+}
+
+// Update sound initialization to use retry logic
+Object.values(SOUNDS).forEach(sound => {
+    retryLoadSound(sound)
+        .catch(error => console.error('Failed to load sound after retries:', error));
+});
+
+// Add this function to test sound loading
+function testSounds() {
+    console.log("Testing sounds...");
+    Object.entries(SOUNDS).forEach(([name, sound]) => {
+        console.log(`Testing ${name}:`, {
+            src: sound.src,
+            readyState: sound.readyState,
+            networkState: sound.networkState,
+            error: sound.error
+        });
+        
+        // Try to play each sound
+        const promise = sound.play();
+        if (promise !== undefined) {
+            promise
+                .then(() => {
+                    console.log(`${name} played successfully`);
+                    sound.pause();
+                    sound.currentTime = 0;
+                })
+                .catch(error => {
+                    console.error(`${name} play failed:`, error);
+                });
+        }
+    });
+}
+
+// Call this after initialization
+document.addEventListener('click', function testAudio() {
+    testSounds();
+    document.removeEventListener('click', testAudio);
+}, { once: true });
+
+// Add this to your existing sound initialization
+Object.values(SOUNDS).forEach(sound => {
+    sound.addEventListener('error', (e) => {
+        console.error('Sound loading error:', {
+            src: sound.src,
+            error: e.error,
+            message: e.message
+        });
+    });
+});

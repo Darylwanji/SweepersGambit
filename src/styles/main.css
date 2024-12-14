@@ -234,3 +234,30 @@ button:hover {
     transform: translateY(-1px);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
+<!-- Add this near the top of the body -->
+<div id="sound-loading" style="display: none;">
+    Loading sounds...
+</div>
+
+<!-- Add this before your closing body tag -->
+<script>
+    // Initialize audio context on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        initializeAudioContext();
+    });
+
+    // Handle user interaction for sound activation
+    document.addEventListener('click', function initAudio() {
+        const sounds = document.querySelectorAll('audio');
+        sounds.forEach(sound => {
+            sound.load();
+            const playPromise = sound.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(() => {/* Ignore errors */});
+            }
+            sound.pause();
+        });
+        document.removeEventListener('click', initAudio);
+    }, { once: true });
+</script>
