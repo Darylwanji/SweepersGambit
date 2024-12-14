@@ -15,19 +15,17 @@ A modern web-based gaming platform featuring two unique games:
 - Background music and sound effects
 - Dark/Light mode toggle
 
-### Chess vs AI
-- Multiple difficulty levels (Easy to Expert)
-- Move history display
-- Captured pieces tracking
-- Sound effects for moves and captures
-- Dark/Light mode toggle
+### Altered Chess 
+- Coming Soon
 
 ## Setup Instructions
 
 1. Clone the repository
-2. Open the project folder in a web server
-3. Access the main menu by opening `src/index.html` in a web browser
-4. Choose between Sweeper's Gambit or Chess vs AI
+```git clone git@github.com:Darylwanji/SweepersGambit.git```
+```cd SweepersGambit```
+1. Open the project folder in a web server
+2. Access the main menu by opening `src/index.html` in a web browser
+3. Choose between Sweeper's Gambit or Chess vs AI
 
 ## Game Controls
 
