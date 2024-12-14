@@ -76,6 +76,13 @@
   <!-- Controls Screen -->
   <!-- Controls moved to controls.html -->
 
+  <script src="https://cdn.jsdelivr.net/npm/aws-amplify@5.0.4/dist/aws-amplify.min.js"></script>
+  <script type="module">
+    import awsConfig from './scripts/aws-config.js';
+    import { Amplify } from 'aws-amplify';
+    
+    Amplify.configure(awsConfig);
+  </script>
   <script src="scripts/game/core/script.js"></script>
   <script src="scripts/theme-handler.js"></script>
 </body>

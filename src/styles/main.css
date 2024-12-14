@@ -64,7 +64,7 @@ h1 {
 }
 
 h2 {
-    background-color: var(--light-square);
+    background-color: #1546cf;
 }
 .leaderboard-entries {
     background-color: var(--light-square);

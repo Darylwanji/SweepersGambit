@@ -1,42 +1,46 @@
-// Leaderboard functions
-function saveSurvivalScore(playerName, time) {
-    const scores = getSurvivalScores();
-    scores.push({ name: playerName, time: time });
-    scores.sort((a, b) => a.time - b.time);
-    scores.splice(10); // Keep only top 10 scores
-    localStorage.setItem('survivalScores', JSON.stringify(scores));
-    updateLeaderboard();
+import { saveScore, getLeaderboard } from '../../services/leaderboard-service.js';
+
+// Update the saveBestTime function to use AWS
+async function saveBestTime(difficulty, timeInSeconds) {
+    try {
+        const playerName = prompt("Congratulations! Enter your name for the leaderboard:", "Player");
+        if (!playerName) return false;
+
+        await saveScore({
+            value: timeInSeconds,
+            playerName: playerName,
+            gameMode: difficulty
+        });
+
+        await updateLeaderboard(); // Refresh the leaderboard
+        return true;
+    } catch (error) {
+        console.error('Error saving score:', error);
+        return false;
+    }
 }
 
-function getSurvivalScores() {
-    const scores = localStorage.getItem('survivalScores');
-    return scores ? JSON.parse(scores) : [];
-}
-
-function updateLeaderboard() {
-    const gameMode = document.getElementById('mode').value;
-    const leaderboardDiv = document.getElementById('leaderboard-entries');
-    leaderboardDiv.innerHTML = '';
-
-    if (gameMode === 'survival') {
-        const scores = getSurvivalScores();
-        scores.forEach((score, index) => {
-            const entry = document.createElement('div');
-            entry.className = 'leaderboard-entry';
-            entry.textContent = `${index + 1}. ${score.name} - ${formatTime(score.time)}`;
-            leaderboardDiv.appendChild(entry);
-        });
-    } else {
-        // Classic mode - use existing best times logic
-        const difficulties = ['easy', 'medium', 'hard'];
-        difficulties.forEach(difficulty => {
-            const bestTime = getBestTime(difficulty);
-            if (bestTime) {
-                const entry = document.createElement('div');
-                entry.className = 'leaderboard-entry';
-                entry.textContent = `${difficulty.toUpperCase()}: ${formatTime(bestTime)}`;
-                leaderboardDiv.appendChild(entry);
-            }
-        });
+// Update the updateLeaderboard function to use AWS
+async function updateLeaderboard() {
+    try {
+        const leaderboardDiv = document.getElementById('leaderboard-entries');
+        const difficulty = document.getElementById('difficulty').value;
+        
+        const scores = await getLeaderboard(difficulty);
+        
+        let html = `<h3>${difficulty.charAt(0).toUpperCase() + difficulty.slice(1)} Mode</h3>`;
+        if (scores.length === 0) {
+            html += '<p>No times recorded yet</p>';
+        } else {
+            html += '<ol>';
+            scores.forEach(score => {
+                html += `<li>${score.playerName} - ${formatTime(score.value)}</li>`;
+            });
+            html += '</ol>';
+        }
+        
+        leaderboardDiv.innerHTML = html;
+    } catch (error) {
+        console.error('Error updating leaderboard:', error);
     }
 }

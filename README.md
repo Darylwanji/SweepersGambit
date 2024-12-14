@@ -25,7 +25,7 @@ A modern web-based gaming platform featuring two unique games:
 ```cd SweepersGambit```
 1. Open the project folder in a web server
 2. Access the main menu by opening `src/index.html` in a web browser
-3. Choose between Sweeper's Gambit or Chess vs AI
+3. Choose between Sweeper's Gambit or Chess
 
 ## Game Controls
 
