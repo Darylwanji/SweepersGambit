@@ -21,22 +21,27 @@ A modern web-based gaming platform featuring two unique games:
 ## Setup Instructions
 
 1. Clone the repository
+```bash
 git clone git@github.com:Darylwanji/SweepersGambit.git
-2. Navigate into the project directory
+```
+1. Navigate into the project directory
 ```bash
 cd SweepersGambit
 ```
-3. Install dependencies
+1. Install dependencies
 ```bash
 npm install
 ```
-4. Start the development server
+1. Start the development server
 ```bash
 npm start
 ```
-5. Access the main menu by opening `src/index.html` in a web browser
-6. OR use this link: ```https://main.dx4ni8ghavzp6.amplifyapp.com/```
-7. Choose between Sweeper's Gambit or Chess
+1. Access the main menu by opening `src/index.html` in a web browser
+2. OR use this link: 
+```bash
+https://main.dx4ni8ghavzp6.amplifyapp.com/
+```
+5. Choose between Sweeper's Gambit or Chess
 
 ## Game Controls
 
